@@ -1,0 +1,420 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- Hero Section / Banner principal -->
+    <div class="hero-section position-relative text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container py-5 py-md-6">
+            <div class="row align-items-center min-vh-50">
+                <div class="col-lg-7 text-center text-lg-start mb-4 mb-lg-0">
+                    <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInUp">
+                        Bienvenido a <span class="text-warning">MiniMarket</span>
+                    </h1>
+                    <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                        Tu tienda de confianza para productos de calidad.
+                        Gestiona tus ventas, inventario y mucho más desde un solo lugar.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center justify-content-lg-start animate__animated animate__fadeInUp animate__delay-2s">
+                        <a asp-controller="Venta" asp-action="create" class="btn btn-light btn-lg rounded-pill px-4">
+                            <i class="bi bi-cart-plus"></i> Nueva Venta
+                        </a>
+                        <a asp-controller="Producto" asp-action="Index" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                            <i class="bi bi-box-seam"></i> Ver Productos
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center animate__animated animate__fadeInRight">
+                    <div class="bg-white bg-opacity-15 rounded-4 p-4 backdrop-blur">
+                        <i class="bi bi-shop fs-1" style="color: orange"></i>
+                        <h3 class="mt-2" style="color: #764ba2">¡Vende más fácil!</h3>
+                        <p class="small" style="color: #764ba2">Sistema de punto de venta intuitivo y rápido</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Ola decorativa -->
+        <div class="wave-bottom">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                <path fill="#f8f9fa" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Tarjetas de estadísticas / Resumen rápido -->
+    <div class="container position-relative" style="margin-top: -60px; z-index: 2;">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-lg rounded-4 h-100 stat-card">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3 mb-3">
+                            <i class="bi bi-box-seam fs-1 text-primary"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" id="totalProductos">0</h3>
+                        <p class="text-muted mb-0">Productos Registrados</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-lg rounded-4 h-100 stat-card">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex p-3 mb-3">
+                            <i class="bi bi-cart-check fs-1 text-success"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" id="totalVentas">0</h3>
+                        <p class="text-muted mb-0">Ventas Realizadas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-lg rounded-4 h-100 stat-card">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-warning bg-opacity-10 d-inline-flex p-3 mb-3">
+                            <i class="bi bi-currency-dollar fs-1 text-warning"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" id="ingresosTotales">$0</h3>
+                        <p class="text-muted mb-0">Ingresos Totales</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de características -->
+    <div class="container py-5 mt-4">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6">¿Qué puedes hacer?</h2>
+            <p class="text-muted lead">Herramientas diseñadas para facilitar tu negocio</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 hover-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-cart-plus fs-1 text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold">Registrar Ventas</h5>
+                        <p class="text-muted">Sistema rápido e intuitivo para registrar tus ventas diarias con control de stock automático.</p>
+                        <a asp-controller="Venta" asp-action="create" class="btn btn-outline-primary rounded-pill mt-2">
+                            Ir a Ventas <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 hover-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-box-seam fs-1 text-success"></i>
+                        </div>
+                        <h5 class="fw-bold">Gestionar Productos</h5>
+                        <p class="text-muted">Administra tu inventario, agrega, edita o elimina productos fácilmente.</p>
+                        <a asp-controller="Producto" asp-action="Index" class="btn btn-outline-success rounded-pill mt-2">
+                            Ver Productos <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 hover-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-graph-up fs-1 text-info"></i>
+                        </div>
+                        <h5 class="fw-bold">Reportes y Estadísticas</h5>
+                        <p class="text-muted">Visualiza el rendimiento de tu negocio con reportes detallados.</p>
+                        <a href="#" class="btn btn-outline-info rounded-pill mt-2">
+                            Ver Reportes <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de productos destacados / últimos agregados -->
+    <div class="bg-light py-5 mt-4">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-0">Últimos Productos</h2>
+                    <p class="text-muted">Los productos más recientes agregados al inventario</p>
+                </div>
+                <a asp-controller="Producto" asp-action="Index" class="btn btn-outline-primary rounded-pill">
+                    Ver todos <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="row g-4" id="ultimosProductos">
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de llamada a la acción (CTA) -->
+    <div class="container py-5 my-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg rounded-4 bg-gradient-primary text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="card-body text-center p-5">
+                        <i class="bi bi-emoji-smile fs-1"></i>
+                        <h3 class="fw-bold mt-3">¿Listo para comenzar a vender?</h3>
+                        <p class="mb-4">Registra tu primera venta hoy mismo y lleva el control de tu negocio</p>
+                        <a asp-controller="Venta" asp-action="create" class="btn btn-light btn-lg rounded-pill px-5">
+                            <i class="bi bi-cart-plus"></i> Nueva Venta
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Cargar estadísticas al iniciar
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarEstadisticas();
+        cargarUltimosProductos();
+    });
+
+    // Función para cargar estadísticas
+    function cargarEstadisticas() {
+        // Aquí puedes hacer una llamada AJAX a tu API para obtener datos reales
+        // Por ahora usamos datos de ejemplo
+        fetch('/api/estadisticas')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('totalProductos').innerText = data.totalProductos || 0;
+                document.getElementById('totalVentas').innerText = data.totalVentas || 0;
+                document.getElementById('ingresosTotales').innerText = '$' + (data.ingresosTotales || 0).toLocaleString();
+            })
+            .catch(error => {
+                // Datos de ejemplo si no hay API
+                document.getElementById('totalProductos').innerText = '24';
+                document.getElementById('totalVentas').innerText = '156';
+                document.getElementById('ingresosTotales').innerText = '$12,450';
+                console.log('Usando datos de ejemplo');
+            });
+    }
+
+    // Función para cargar últimos productos
+    function cargarUltimosProductos() {
+        fetch('/api/ultimos-productos')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('ultimosProductos');
+                container.innerHTML = '';
+
+                if (data && data.length > 0) {
+                    data.forEach(producto => {
+                        container.innerHTML += `
+                            <div class="col-md-3">
+                                <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
+                                    <div class="card-body text-center p-3">
+                                        <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
+                                            <i class="bi bi-box fs-2 text-primary"></i>
+                                        </div>
+                                        <h6 class="fw-bold mb-1">${producto.nombre}</h6>
+                                        <p class="text-muted small">Código: ${producto.codigo}</p>
+                                        <p class="text-success fw-bold fs-5">$${producto.precio}</p>
+                                        <a href="/Producto/Details/${producto.id}" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    container.innerHTML = `
+                        <div class="col-12 text-center">
+                            <p class="text-muted">No hay productos disponibles</p>
+                            <a href="/Producto/Create" class="btn btn-primary">Agregar primer producto</a>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                // Datos de ejemplo
+                const container = document.getElementById('ultimosProductos');
+                container.innerHTML = `
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
+                            <div class="card-body text-center p-3">
+                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
+                                    <i class="bi bi-box fs-2 text-primary"></i>
+                                </div>
+                                <h6 class="fw-bold mb-1">Leche Entera</h6>
+                                <p class="text-muted small">Código: 750123456789</p>
+                                <p class="text-success fw-bold fs-5">$25.50</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
+                            <div class="card-body text-center p-3">
+                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
+                                    <i class="bi bi-box fs-2 text-primary"></i>
+                                </div>
+                                <h6 class="fw-bold mb-1">Pan Integral</h6>
+                                <p class="text-muted small">Código: 750987654321</p>
+                                <p class="text-success fw-bold fs-5">$18.00</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
+                            <div class="card-body text-center p-3">
+                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
+                                    <i class="bi bi-box fs-2 text-primary"></i>
+                                </div>
+                                <h6 class="fw-bold mb-1">Arroz 1kg</h6>
+                                <p class="text-muted small">Código: 750456789123</p>
+                                <p class="text-success fw-bold fs-5">$22.00</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
+                            <div class="card-body text-center p-3">
+                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
+                                    <i class="bi bi-box fs-2 text-primary"></i>
+                                </div>
+                                <h6 class="fw-bold mb-1">Aceite Vegetal</h6>
+                                <p class="text-muted small">Código: 750789123456</p>
+                                <p class="text-success fw-bold fs-5">$35.00</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+    }
+</script>
+
+<style>
+    /* Hero section */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .min-vh-50 {
+        min-height: 50vh;
+    }
+
+    .wave-bottom {
+        pointer-events: none;
+    }
+
+    .backdrop-blur {
+        backdrop-filter: blur(10px);
+    }
+
+    .wave-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        line-height: 0;
+    }
+
+    /* Tarjetas de estadísticas */
+    .stat-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1) !important;
+        }
+
+    /* Tarjetas de características */
+    .hover-card {
+        transition: all 0.3s ease;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+        }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border-radius: 20px;
+    }
+
+    /* Tarjetas de productos */
+    .product-card {
+        transition: all 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+        }
+
+    /* Animaciones */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+  /*   .animate__fadeInUp {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .animate__delay-1s {
+        animation-delay: 0.2s;
+        opacity: 0;
+    }
+
+    .animate__delay-2s {
+        animation-delay: 0.4s;
+        opacity: 0;
+    }
+
+    .animate__fadeInRight {
+        animation: fadeInUp 0.6s ease-out 0.1s forwards;
+        opacity: 0;
+    } */
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .display-3 {
+            font-size: 2rem;
+        }
+
+        .lead {
+            font-size: 1rem;
+        }
+
+        .stat-card {
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+

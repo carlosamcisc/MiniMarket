@@ -1,0 +1,121 @@
+﻿@* @{
+    ViewData["Title"] = "venta realizada";
+}
+<h2>venta realizada correctamente ✅</h2>
+
+<p>tu venta fue registrada con éxito.</p>
+
+<div style="margin-top:20px;">
+    <a asp-action="Ticket" asp-route-id="@Context.Request.RouteValues["id"]" class="btn btn-primary">
+        descargar ticket
+    </a>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        volver
+    </a>
+</div> *@
+@{
+    ViewData["Title"] = "Venta realizada";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Tarjeta principal -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5 text-center">
+
+                    <!-- Icono de éxito -->
+                    <div class="mb-4">
+                        <div class="mx-auto bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- Título -->
+                    <h1 class="h3 mb-3 fw-bold text-dark">¡Venta realizada con éxito!</h1>
+
+                    <!-- Mensaje -->
+                    <div class="alert alert-success bg-success bg-opacity-10 border-0 text-dark-emphasis rounded-3 py-3">
+                        <i class="bi bi-cart-check"></i> Tu venta fue registrada correctamente en el sistema.
+                    </div>
+
+                    <!-- Detalles adicionales opcionales -->
+                    <div class="mb-4 p-3 bg-light rounded-3">
+                        <small class="text-muted">
+                            <i class="bi bi-clock-history"></i> Fecha: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                        </small>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a asp-action="Ticket" asp-route-id="@Context.Request.RouteValues["id"]"
+                           class="btn btn-primary btn-lg px-4 py-2 rounded-3 shadow-sm">
+                            <i class="bi bi-download"></i> Descargar ticket
+                        </a>
+
+                        <a asp-action="create"
+                           class="btn btn-outline-secondary btn-lg px-4 py-2 rounded-3">
+                            <i class="bi bi-arrow-left"></i> Volver al inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer opcional -->
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    <i class="bi bi-shield-check"></i> Transacción segura
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS adicional para mejorar animaciones y estilos -->
+<style>
+    /* Animación suave al cargar */
+    .card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Hover en botones */
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+    /* Mejora del icono circular */
+    .bg-success.bg-opacity-10 {
+        background-color: rgba(25, 135, 84, 0.1) !important;
+    }
+
+    /* Responsive */
+    @@media (max-width: 576px) {
+        .btn-lg {
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+        }
+    }
+</style>
+

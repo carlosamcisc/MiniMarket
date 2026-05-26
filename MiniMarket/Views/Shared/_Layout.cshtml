@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MiniMarket</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MiniMarket.styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+</head>
+<body>
+    <header>
+        @* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MiniMarket</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Producto" asp-action="Index">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Venta" asp-action="create">Vender</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav> *@
+        @if (ViewData["HideNavbar"] == null)
+        {
+            <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="container">
+                    <!-- Logo y marca -->
+                    <a class="navbar-brand fw-bold fs-4" asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-shop fs-3 me-2"></i>
+                        MiniMarket
+                    </a>
+
+                    <!-- Botón toggler para móviles -->
+                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                            aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <!-- Menú principal -->
+                    <div class="collapse navbar-collapse" id="navbarMain">
+                        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                            <!-- Inicio -->
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                                   asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-house-door me-1"></i> Inicio
+                                </a>
+                            </li>
+
+                            <!-- Productos -->
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Producto" ? "active" : "")"
+                                   asp-area="" asp-controller="Producto" asp-action="Index">
+                                    <i class="bi bi-box-seam me-1"></i> Productos
+                                </a>
+                            </li>
+
+                            <!-- Vender -->
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Venta" ? "active" : "")"
+                                   asp-area="" asp-controller="Venta" asp-action="create">
+                                    <i class="bi bi-cart-plus me-1"></i> Vender
+                                </a>
+                            </li>
+
+                            @*   <!-- Ventas (opcional - si tienes índice de ventas) -->
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold" asp-area="" asp-controller="Venta" asp-action="Index">
+                                <i class="bi bi-receipt me-1"></i> Ventas
+                            </a>
+                        </li> *@
+                        </ul>
+
+                        <!-- Sección derecha - Usuario/Configuración -->
+                        <div class="d-flex gap-2">
+                            <!-- Reloj en tiempo real -->
+                            <div class="d-none d-lg-flex align-items-center text-white me-3">
+                                <i class="bi bi-clock me-1"></i>
+                                <span id="liveClock" class="small"></span>
+                            </div>
+
+                            <!-- Dropdown de usuario (ejemplo) -->
+                            <div class="dropdown">
+                                <button class="btn btn-light btn-sm rounded-pill dropdown-toggle d-flex align-items-center gap-2"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle"></i>
+                                    <span class="d-none d-sm-inline">Admin</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bi bi-person"></i> Mi perfil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bi bi-gear"></i> Configuración
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#">
+                                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            
+        }
+
+       
+
+        <!-- CSS adicional -->
+        <style>
+            /* Estilos del navbar */
+            .navbar {
+                padding: 0.8rem 0;
+                transition: all 0.3s ease;
+            }
+
+            /* Enlaces del navbar */
+            .navbar-nav .nav-link {
+                color: rgba(255, 255, 255, 0.9) !important;
+                padding: 0.5rem 1rem;
+                margin: 0 0.2rem;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
+            }
+
+                /* Hover en enlaces */
+                .navbar-nav .nav-link:hover {
+                    color: white !important;
+                    background-color: rgba(255, 255, 255, 0.15);
+                    transform: translateY(-2px);
+                }
+
+                /* Enlace activo */
+                .navbar-nav .nav-link.active {
+                    color: white !important;
+                    background-color: rgba(255, 255, 255, 0.25);
+                    font-weight: bold;
+                }
+
+            /* Logo/brand */
+            .navbar-brand {
+                transition: transform 0.3s ease;
+            }
+
+                .navbar-brand:hover {
+                    transform: scale(1.05);
+                }
+
+            /* Botón toggler personalizado */
+            .navbar-toggler {
+                background-color: rgba(255, 255, 255, 0.2);
+                padding: 0.5rem 0.75rem;
+            }
+
+                .navbar-toggler:focus {
+                    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+                }
+
+            /* Dropdown personalizado */
+            .dropdown-menu {
+                animation: fadeInDown 0.3s ease;
+            }
+
+            @@keyframes fadeInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .dropdown-item {
+                padding: 0.5rem 1rem;
+                transition: all 0.2s ease;
+            }
+
+                .dropdown-item:hover {
+                    background-color: #f8f9fa;
+                    transform: translateX(5px);
+                }
+
+            /* Botón de usuario */
+            .btn-light {
+                background-color: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                transition: all 0.3s ease;
+            }
+
+                .btn-light:hover {
+                    background-color: rgba(255, 255, 255, 0.3);
+                    color: white;
+                    transform: translateY(-2px);
+                }
+
+            /* Responsive */
+            @@media (max-width: 992px) {
+                .navbar-nav {
+                    margin-top: 1rem;
+                }
+
+                    .navbar-nav .nav-link {
+                        padding: 0.6rem 1rem;
+                    }
+
+                .dropdown {
+                    margin-top: 1rem;
+                    width: 100%;
+                }
+
+                .dropdown-toggle {
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .dropdown-menu {
+                    width: 100%;
+                }
+            }
+
+            /* Sombra al hacer scroll */
+            .navbar.sticky-top.scrolled {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            }
+        </style>
+
+        <!-- Script para reloj en vivo y efecto de scroll -->
+        <script>
+            // Reloj en tiempo real
+            function updateClock() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('es-MX', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                const clockElement = document.getElementById('liveClock');
+                if (clockElement) {
+                    clockElement.textContent = timeString;
+                }
+            }
+
+            // Actualizar reloj cada segundo
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Efecto de scroll en el navbar
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 10) {
+                    navbar.classList.add('scrolled');
+                    navbar.style.padding = '0.5rem 0';
+                } else {
+                    navbar.classList.remove('scrolled');
+                    navbar.style.padding = '0.8rem 0';
+                }
+            });
+
+            // Cerrar menú móvil al hacer clic en un enlace
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse.classList.contains('show')) {
+                        document.querySelector('.navbar-toggler').click();
+                    }
+                });
+            });
+        </script>
+    </header>
+   @*  <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div> *@
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - MiniMarket - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

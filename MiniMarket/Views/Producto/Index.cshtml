@@ -1,0 +1,168 @@
+﻿@model IEnumerable<MiniMarket.Models.Producto>
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
+                                <i class="bi bi-box-seam fs-4 text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="mb-0 fw-bold text-white">Lista de Productos</h4>
+                                <p class="mb-0 text-white opacity-75 small">Gestión de inventario</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a asp-action="Create" class="btn btn-light btn-lg rounded-pill shadow-sm">
+                                <i class="bi bi-plus-circle"></i> Nuevo Producto
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuerpo -->
+                <div class="card-body p-0">
+
+                    <!-- Búsqueda -->
+                    <div class="p-4 bg-light border-bottom">
+                        <form method="get" asp-action="Buscar" class="d-flex gap-2">
+                            <div class="flex-grow-1">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="bi bi-search text-muted"></i>
+                                    </span>
+                                    <input type="text" name="buscar" class="form-control border-start-0"
+                                           placeholder="Buscar por nombre o código..."
+                                           value="@ViewBag.Busqueda">
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(ViewBag.Busqueda))
+                            {
+                                <a asp-action="Index" class="btn btn-outline-danger">Limpiar</a>
+                            }
+                        </form>
+                    </div>
+
+                    <!-- Tabla -->
+                    <div class="table-responsive">
+                        @if (!Model.Any())
+                        {
+                            <div class="text-center py-5">
+                                <i class="bi bi-inbox fs-1 text-muted d-block mb-3"></i>
+                                <h5 class="text-muted">No se encontraron productos</h5>
+                                <a asp-action="Create" class="btn btn-primary mt-3">Agregar primer producto</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <table class="table table-hover align-middle mb-0" id="productosTable">
+                                <thead class="table-dark">
+                                    <tr class="text-center">
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Código</th>
+                                        <th>Precio</th>
+                                      @*   <th>Stock</th> *@
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int contador = 1;
+                                    }
+                                    @foreach (var item in Model)
+                                    {
+                                        int stock = item.Inventarios?.Sum(i => i.Stock) ?? 0;
+                                        <tr>
+                                            <td class="text-center">@contador</td>
+                                            <td>@item.Nombre</td>
+                                            <td class="text-center"><code>@item.Codigo</code></td>
+                                            <td class="text-center text-success fw-bold">$@item.Precio.ToString("N2")</td>
+@*                                             <td class="text-center">
+                                                @if (stock == 0)
+                                                {
+                                                    <span class="badge bg-danger">Sin stock</span>
+                                                }
+                                                else if (stock <= 5)
+                                                {
+                                                    <span class="badge bg-warning text-dark">@stock unidades</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-success">@stock unidades</span>
+                                                }
+                                            </td> *@
+                                            <td class="text-center">
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm text-white">Ver</a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                        contador++;
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                    @if (Model.Any())
+                    {
+                        <div class="p-3 bg-light border-top text-end">
+                            <small class="text-muted">Total: @Model.Count() productos</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table th {
+        background-color: #212529;
+        color: white;
+        padding: 12px;
+    }
+
+    .table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+    }
+
+    code {
+        background-color: #f8f9fa;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+
+    .btn-sm {
+        margin: 0 2px;
+    }
+
+    @@media (max-width: 768px) {
+        .btn-sm {
+            margin: 2px;
+        }
+
+        .table td, .table th {
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+

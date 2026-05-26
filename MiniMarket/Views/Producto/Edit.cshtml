@@ -1,0 +1,252 @@
+﻿@* @model MiniMarket.Models.Producto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Producto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Precio" class="control-label"></label>
+                <input asp-for="Precio" class="form-control" />
+                <span asp-validation-for="Precio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>stock inicial</label>
+                <input type="number" name="stock" class="form-control" min="0" required value="@ViewBag.Stock" />
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} *@
+@model MiniMarket.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar Producto";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+
+            <!-- Tarjeta principal -->
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <!-- Header con gradiente -->
+                <div class="card-header bg-gradient-primary text-white py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-pencil-square fs-2 me-2"></i>
+                        <div>
+                            <h2 class="h4 mb-0 fw-bold">Editar Producto</h2>
+                            <p class="mb-0 opacity-75 small">Modifica los datos del producto</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del formulario -->
+                <div class="card-body p-4 p-lg-5">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Campo: Nombre -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Nombre" class="form-label fw-semibold">
+                                <i class="bi bi-tag me-1"></i> Nombre del producto
+                            </label>
+                            <input asp-for="Nombre" class="form-control form-control-lg rounded-3"
+                                   placeholder="Ej: Leche entera" />
+                            <span asp-validation-for="Nombre" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Campo: Código -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Codigo" class="form-label fw-semibold">
+                                <i class="bi bi-upc-scan me-1"></i> Código de barras
+                            </label>
+                            <input asp-for="Codigo" class="form-control form-control-lg rounded-3"
+                                   placeholder="Ej: 750123456789" />
+                            <span asp-validation-for="Codigo" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Campo: Precio -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Precio" class="form-label fw-semibold">
+                                <i class="bi bi-currency-dollar me-1"></i> Precio
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-3 rounded-end-0">$</span>
+                                <input asp-for="Precio" class="form-control form-control-lg rounded-3 rounded-start-0"
+                                       placeholder="0.00" step="0.01" />
+                            </div>
+                            <span asp-validation-for="Precio" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Campo: Stock -->
+                        <div class="form-group mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-box-seam me-1"></i> Stock inicial
+                            </label>
+                            <div class="input-group">
+                                <button type="button" class="btn btn-outline-secondary rounded-3 rounded-end-0"
+                                        onclick="decrementStock()">
+                                    <i class="bi bi-dash-lg"></i>
+                                </button>
+                                <input type="number" id="stockInput" name="stock" class="form-control form-control-lg text-center"
+                                       min="0" required value="@ViewBag.Stock" step="1" />
+                                <button type="button" class="btn btn-outline-secondary rounded-3 rounded-start-0"
+                                        onclick="incrementStock()">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Cantidad disponible en inventario
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex gap-3 mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1 btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-check-lg"></i> Guardar cambios
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-3">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="alert alert-info mt-4 rounded-3 shadow-sm">
+                <div class="d-flex">
+                    <i class="bi bi-lightbulb fs-4 me-3"></i>
+                    <div>
+                        <strong class="d-block">Consejo:</strong>
+                        <small>
+                            Los campos marcados con <span class="text-danger">*</span> son obligatorios.
+                            Asegúrate de revisar los datos antes de guardar.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Funciones para incrementar/decrementar stock
+        function incrementStock() {
+            var input = document.getElementById('stockInput');
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrementStock() {
+            var input = document.getElementById('stockInput');
+            var currentValue = parseInt(input.value);
+            if (currentValue > 0) {
+                input.value = currentValue - 1;
+            }
+        }
+
+        // Validar que el stock no sea negativo al escribir manualmente
+        document.getElementById('stockInput').addEventListener('change', function() {
+            if (this.value < 0) {
+                this.value = 0;
+            }
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    /* Mejoras visuales */
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-outline-secondary:hover {
+        transform: translateY(-2px);
+    }
+
+    .card {
+        animation: slideIn 0.4s ease-out;
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Botones de incremento/decremento */
+    .input-group .btn {
+        transition: all 0.2s ease;
+    }
+
+    .input-group .btn:hover {
+        background-color: #e9ecef;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .btn-lg {
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem;
+        }
+    }
+</style>

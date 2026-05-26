@@ -1,0 +1,631 @@
+﻿@using MiniMarket.Models.ViewModels;
+@model ventaViewModel;
+@{
+    ViewData["HideNavbar"] = true;
+}
+
+<!-- row justify-content-center -->
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+
+            <!-- Tarjeta principal -->
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+
+                <!-- Header con gradiente -->
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <a class="navbar-brand fw-bold fs-4" style="color:white">
+                        <i class="bi bi-shop fs-3 me-2"></i>
+                        MiniMarket    Sistema de venta
+                        <br />
+                    </a>
+               @*      <h3 class="mb-0 fw-bold text-white">Sistema de ventas</h3> *@
+                    <br />
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                        <div class="d-flex align-items-center">
+                           
+                            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
+                                <i class="bi bi-cart-check fs-4 text-white"></i>
+                            </div>
+                         
+                            <div>
+                                <h4 class="mb-0 fw-bold text-white">Nueva Venta</h4>
+                                <p class="mb-0 text-white opacity-75 small">Registra una nueva transacción</p>
+                            </div>
+                        </div>
+                        <div class="mt-2 mt-sm-0">
+                            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+                                <i class="bi bi-calendar"></i> @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+
+                        </div>
+                        <div class="mt-2 mt-sm-0">
+                            <!-- Sección derecha - Usuario/Configuración -->
+                            <div class="d-flex gap-2">
+                                <!-- Reloj en tiempo real -->
+                                <div class="d-none d-lg-flex align-items-center text-white me-3">
+                                    <i class="bi bi-clock me-1"></i>
+                                    <span id="liveClock" class="small"></span>
+                                </div>
+
+                                <!-- Dropdown de usuario (ejemplo) -->
+                                <div class="dropdown">
+                                    <button class="btn btn-light btn-sm rounded-pill dropdown-toggle d-flex align-items-center gap-2"
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-person-circle"></i>
+                                        <span class="d-none d-sm-inline">Empleado</span>
+                                    </button>
+                                   
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2">
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="bi bi-person"></i> Mi perfil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Home" asp-action="Index">
+                                                <i class="bi bi-gear"></i> Administrar sistema
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">
+                                                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del formulario -->
+                <div class="card-body p-4 p-lg-5">
+
+                    <form asp-action="create" method="post" id="ventaForm">
+
+                        <!-- Sección de selección de producto -->
+                        <div class="card border-0 shadow-sm rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3">
+                                    <i class="bi bi-plus-circle text-success"></i> Agregar productos
+                                </h5>
+
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">
+                                            <i class="bi bi-box"></i> Producto
+                                        </label>
+                                        <select id="producto_id" class="form-select form-select-lg rounded-3">
+                                            <option value="">Seleccionar producto...</option>
+                                            @foreach (var p in Model.productos)
+                                            {
+                                                var stock = p.Inventarios.Sum(i => i.Stock);
+                                                if (stock > 0)
+                                                {
+                                                    <option value="@p.Id"
+                                                            data-precio="@p.Precio"
+                                                            data-stock="@stock"
+                                                            data-nombre="@p.Nombre">
+                                                        @p.Nombre - $@p.Precio.ToString("N2") (Stock: @stock)
+                                                    </option>
+                                                }
+                                            }
+                                        </select>
+                                        <div class="form-text">
+                                            <i class="bi bi-info-circle"></i> Solo se muestran productos con stock disponible
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">
+                                            <i class="bi bi-hash"></i> Cantidad
+                                        </label>
+                                        <input type="number" id="cantidad" value="1" min="1" class="form-control form-control-lg rounded-3" />
+                                        <div class="form-text">
+                                            <i class="bi bi-arrow-up-down"></i> Unidades a vender
+                                        </div>
+                                    </div>
+
+                                  
+                                    <div class="col-md-3 d-flex flex-column justify-content-end">
+                                        <label class="form-label fw-semibold invisible">Acción</label>
+
+                                        <button type="button" onclick="agregarProducto()"
+                                                class="btn btn-success btn-lg w-100 rounded-3 shadow-sm">
+                                            <i class="bi bi-plus-circle"></i> Agregar
+                                        </button>
+
+                                        <div class="form-text invisible">placeholder</div>
+                                    </div>
+
+
+                                   
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tabla de productos agregados -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0">
+                                    <i class="bi bi-list-check"></i> Productos seleccionados
+                                </h5>
+                                <span class="badge bg-secondary rounded-pill" id="itemsCount">0 items</span>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped align-middle">
+                                    <thead class="table-dark">
+                                        <tr class="text-center">
+                                            <th><i class="bi bi-box"></i> Producto</th>
+                                            <th><i class="bi bi-hash"></i> Cantidad</th>
+                                            <th><i class="bi bi-currency-dollar"></i> Precio unitario</th>
+                                            <th><i class="bi bi-calculator"></i> Subtotal</th>
+                                            <th><i class="bi bi-trash"></i> Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detalle">
+                                        <tr id="emptyRow">
+                                            <td colspan="5" class="text-center text-muted py-5">
+                                                <i class="bi bi-cart fs-1 d-block mb-2"></i>
+                                                No hay productos agregados
+                                                <br>
+                                                <small>Selecciona productos del menú superior</small>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot id="tableFooter" style="display: none;">
+                                        <tr class="table-light fw-bold">
+                                            <td colspan="3" class="text-end">Total:</td>
+                                            <td class="text-center text-success fs-5" id="totalCell">$0.00</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Resumen de venta -->
+                        <div class="card bg-gradient-light border-0 rounded-3 mb-4" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+                            <div class="card-body p-4">
+                                <div class="col-md-6 mt-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                       @*  <div class="rounded-circle bg-white p-3 shadow-sm">
+                                            <i class="bi bi-cash-coin fs-3 text-primary"></i>
+                                        </div>
+                                        <label for="efectivo">Efectivo</label>
+                                        <input type="number" id="efectivo" name="efectivo" class="form-control form-control-lg rounded-3" style="width:200px"> *@
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                   
+                                   
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="rounded-circle bg-white p-3 shadow-sm">
+                                                <i class="bi bi-calculator fs-3 text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted d-block">Total de la venta</small>
+                                                <h2 class="fw-bold mb-0 text-success">
+                                                    $<span id="total">0.00</span>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                   
+                                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                                        <div class="d-flex gap-2 justify-content-md-end">
+                                            <button type="button" onclick="limpiarTodo()" class="btn btn-outline-danger rounded-pill px-4">
+                                                <i class="bi bi-trash3"></i> Limpiar todo
+                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
+                                                <i class="bi bi-cash-coin"></i> Finalizar venta
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Datos ocultos -->
+                        <input type="hidden" name="detalleJson" id="detalleJson" />
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let detalles = [];
+
+    // Función para agregar producto
+    function agregarProducto() {
+        let select = document.getElementById("producto_id");
+        let selectedOption = select.options[select.selectedIndex];
+
+        // Validar que se haya seleccionado un producto
+        if (!selectedOption.value) {
+            mostrarAlerta('warning', 'Por favor, selecciona un producto');
+            return;
+        }
+
+        let productoId = parseInt(selectedOption.value);
+        let nombre = selectedOption.dataset.nombre || selectedOption.text.split(' - ')[0];
+        let precio = parseFloat(selectedOption.dataset.precio);
+        let stockDisponible = parseInt(selectedOption.dataset.stock);
+        let cantidad = parseInt(document.getElementById("cantidad").value);
+
+        // Validaciones
+        if (isNaN(cantidad) || cantidad < 1) {
+            mostrarAlerta('warning', 'La cantidad debe ser al menos 1');
+            return;
+        }
+
+        // Verificar si el producto ya está en la lista
+        let existingIndex = detalles.findIndex(d => d.productoId === productoId);
+        let cantidadActual = existingIndex !== -1 ? detalles[existingIndex].cantidad : 0;
+        let nuevaCantidad = cantidadActual + cantidad;
+
+        if (nuevaCantidad > stockDisponible) {
+            mostrarAlerta('error', `Stock insuficiente. Solo hay ${stockDisponible} unidades disponibles`);
+            return;
+        }
+
+        // Agregar o actualizar producto
+        if (existingIndex !== -1) {
+            // Actualizar cantidad
+            detalles[existingIndex].cantidad = nuevaCantidad;
+            actualizarFila(existingIndex);
+            mostrarAlerta('success', `Cantidad actualizada: ${nombre} x${cantidad}`);
+        } else {
+            // Agregar nuevo producto
+            let subtotal = precio * cantidad;
+
+            detalles.push({
+                productoId: productoId,
+                nombre: nombre,
+                cantidad: cantidad,
+                precio: precio,
+                subtotal: subtotal
+            });
+
+            agregarFila(detalles.length - 1);
+            mostrarAlerta('success', `Producto agregado: ${nombre} x${cantidad}`);
+        }
+
+        // Resetear selector y cantidad
+        select.value = "";
+        document.getElementById("cantidad").value = "1";
+
+        calcularTotal();
+        actualizarContador();
+    }
+
+    // Función para agregar fila a la tabla
+    function agregarFila(index) {
+        let d = detalles[index];
+        let fila = `
+            <tr id="fila-${index}">
+                <td class="fw-semibold">
+                    <i class="bi bi-box-seam text-primary me-2"></i>${d.nombre}
+                </td>
+                <td class="text-center">
+                    <div class="d-flex justify-content-center align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-circle" onclick="cambiarCantidad(${index}, -1)">
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <span class="fw-bold mx-2" style="min-width: 40px;">${d.cantidad}</span>
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-circle" onclick="cambiarCantidad(${index}, 1)">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                </td>
+                <td class="text-center">$${d.precio.toFixed(2)}</td>
+                <td class="text-center fw-bold text-success">$${(d.precio * d.cantidad).toFixed(2)}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-danger rounded-circle" onclick="eliminarProducto(${index})">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+
+        // Eliminar mensaje vacío si existe
+        let emptyRow = document.getElementById("emptyRow");
+        if (emptyRow) {
+            emptyRow.remove();
+        }
+
+        document.getElementById("detalle").insertAdjacentHTML('beforeend', fila);
+        document.getElementById("tableFooter").style.display = '';
+    }
+
+    // Función para actualizar fila existente
+    function actualizarFila(index) {
+        let d = detalles[index];
+        let fila = document.getElementById(`fila-${index}`);
+        if (fila) {
+            fila.querySelector('td:nth-child(2) .fw-bold').innerText = d.cantidad;
+            fila.querySelector('td:nth-child(4)').innerHTML = `<span class="fw-bold text-success">$${(d.precio * d.cantidad).toFixed(2)}</span>`;
+        } else {
+            agregarFila(index);
+        }
+    }
+
+    // Función para cambiar cantidad
+    function cambiarCantidad(index, cambio) {
+        let nuevaCantidad = detalles[index].cantidad + cambio;
+
+        if (nuevaCantidad < 1) {
+            eliminarProducto(index);
+            return;
+        }
+
+        // Verificar stock disponible
+        let select = document.getElementById("producto_id");
+        let stockDisponible = 0;
+        for (let i = 0; i < select.options.length; i++) {
+            if (parseInt(select.options[i].value) === detalles[index].productoId) {
+                stockDisponible = parseInt(select.options[i].dataset.stock);
+                break;
+            }
+        }
+
+        if (nuevaCantidad > stockDisponible) {
+            mostrarAlerta('error', `Stock insuficiente. Solo hay ${stockDisponible} unidades disponibles`);
+            return;
+        }
+
+        detalles[index].cantidad = nuevaCantidad;
+        actualizarFila(index);
+        calcularTotal();
+        actualizarContador();
+        mostrarAlerta('info', `Cantidad actualizada a ${nuevaCantidad}`);
+    }
+
+    // Función para eliminar producto
+    function eliminarProducto(index) {
+        detalles.splice(index, 1);
+        reconstruirTabla();
+        calcularTotal();
+        actualizarContador();
+        mostrarAlerta('info', 'Producto eliminado');
+    }
+
+    // Reconstruir tabla completa
+    function reconstruirTabla() {
+        let tbody = document.getElementById("detalle");
+        tbody.innerHTML = "";
+
+        if (detalles.length === 0) {
+            tbody.innerHTML = `
+                <tr id="emptyRow">
+                    <td colspan="5" class="text-center text-muted py-5">
+                        <i class="bi bi-cart fs-1 d-block mb-2"></i>
+                        No hay productos agregados
+                        <br>
+                        <small>Selecciona productos del menú superior</small>
+                    </td>
+                </tr>
+            `;
+            document.getElementById("tableFooter").style.display = 'none';
+        } else {
+            detalles.forEach((d, i) => {
+                let fila = `
+                    <tr id="fila-${i}">
+                        <td class="fw-semibold">
+                            <i class="bi bi-box-seam text-primary me-2"></i>${d.nombre}
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-circle" onclick="cambiarCantidad(${i}, -1)">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                                <span class="fw-bold mx-2" style="min-width: 40px;">${d.cantidad}</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-circle" onclick="cambiarCantidad(${i}, 1)">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="text-center">$${d.precio.toFixed(2)}</td>
+                        <td class="text-center fw-bold text-success">$${(d.precio * d.cantidad).toFixed(2)}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-danger rounded-circle" onclick="eliminarProducto(${i})">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', fila);
+            });
+            document.getElementById("tableFooter").style.display = '';
+        }
+    }
+
+    // Calcular total
+    function calcularTotal() {
+        let total = 0;
+        detalles.forEach(d => {
+            total += d.precio * d.cantidad;
+        });
+
+        document.getElementById("total").innerText = total.toFixed(2);
+        if (document.getElementById("totalCell")) {
+            document.getElementById("totalCell").innerHTML = `$${total.toFixed(2)}`;
+        }
+    }
+
+    // Actualizar contador de items
+    function actualizarContador() {
+        let totalItems = detalles.reduce((sum, d) => sum + d.cantidad, 0);
+        let itemsCount = document.getElementById("itemsCount");
+        if (itemsCount) {
+            itemsCount.innerText = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+        }
+    }
+
+    // Limpiar todo
+    function limpiarTodo() {
+        if (confirm('¿Estás seguro de que deseas limpiar toda la venta?')) {
+            detalles = [];
+            reconstruirTabla();
+            calcularTotal();
+            actualizarContador();
+            mostrarAlerta('info', 'Venta limpiada');
+        }
+    }
+
+    // Preparar envío
+    function preparar() {
+        if (detalles.length === 0) {
+            mostrarAlerta('error', 'Agrega al menos un producto antes de finalizar la venta');
+            return false;
+        }
+
+        let detallesParaEnviar = detalles.map(d => ({
+            productoId: d.productoId,
+            cantidad: d.cantidad,
+            precio: d.precio
+        }));
+
+        document.getElementById("detalleJson").value = JSON.stringify(detallesParaEnviar);
+
+        // Mostrar confirmación
+        let total = document.getElementById("total").innerText;
+        return confirm(`Total de la venta: $${total}\n\n¿Confirmas realizar esta venta?`);
+    }
+
+    // Mostrar alerta personalizada
+    function mostrarAlerta(tipo, mensaje) {
+        // Crear elemento de alerta
+        let alerta = document.createElement('div');
+        alerta.className = `alert alert-${tipo === 'error' ? 'danger' : tipo === 'warning' ? 'warning' : tipo === 'success' ? 'success' : 'info'} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+        alerta.style.zIndex = '9999';
+        alerta.style.minWidth = '300px';
+        alerta.innerHTML = `
+            <i class="bi bi-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-triangle' : tipo === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+            ${mensaje}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        document.body.appendChild(alerta);
+
+        // Auto-cerrar después de 3 segundos
+        setTimeout(() => {
+            alerta.classList.remove('show');
+            setTimeout(() => alerta.remove(), 300);
+        }, 3000);
+    }
+
+    // Evento submit del formulario
+    document.getElementById('ventaForm')?.addEventListener('submit', function(e) {
+        if (!preparar()) {
+            e.preventDefault();
+        }
+    });
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+        actualizarContador();
+    });
+</script>
+
+<!-- Estilos adicionales -->
+<style>
+    /* Animaciones */
+    .table tbody tr {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Hover en filas */
+    .table tbody tr:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+        transition: all 0.2s ease;
+    }
+
+    /* Botones de cantidad */
+    .btn-outline-secondary {
+        transition: all 0.2s ease;
+    }
+
+        .btn-outline-secondary:hover {
+            transform: scale(1.1);
+        }
+
+    /* Select y inputs mejorados */
+    .form-select:focus, .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    /* Botón finalizar */
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+    /* Botón limpiar */
+    .btn-outline-danger:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Alertas flotantes */
+    .alert {
+        animation: slideDown 0.3s ease-out;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .btn-lg {
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem;
+        }
+
+        .table {
+            font-size: 0.85rem;
+        }
+
+        .btn-outline-secondary {
+            padding: 0.25rem 0.5rem;
+        }
+    }
+</style>

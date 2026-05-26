@@ -1,0 +1,433 @@
+﻿@* @model MiniMarket.Models.Producto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Producto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Precio" class="control-label"></label>
+                <input asp-for="Precio" class="form-control" />
+                <span asp-validation-for="Precio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>stock inicial</label>
+                <input type="number" name="stock" class="form-control" min="0" required />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+ *@
+@model MiniMarket.Models.Producto
+
+@{
+    ViewData["Title"] = "Crear Producto";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+
+            <!-- Tarjeta principal -->
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <!-- Header con gradiente verde (éxito/creación) -->
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
+                            <i class="bi bi-plus-circle-fill text-white fs-2"></i>
+                        </div>
+                        <div>
+                            <h2 class="h4 mb-0 fw-bold text-white">Nuevo Producto</h2>
+                            <p class="mb-0 text-white opacity-75 small">Completa los datos para registrar un producto</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del formulario -->
+                <div class="card-body p-4 p-lg-5">
+                    <form asp-action="Create" id="createForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Campo: Nombre -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Nombre" class="form-label fw-semibold">
+                                <i class="bi bi-tag me-1"></i> Nombre del producto <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-3 rounded-end-0 bg-light">
+                                    <i class="bi bi-tag text-secondary"></i>
+                                </span>
+                                <input asp-for="Nombre" class="form-control form-control-lg rounded-3 rounded-start-0"
+                                       placeholder="Ej: Leche entera, Pan integral, Arroz" />
+                            </div>
+                            <span asp-validation-for="Nombre" class="text-danger small mt-1 d-block"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Ingresa un nombre descriptivo y fácil de identificar
+                            </div>
+                        </div>
+
+                        <!-- Campo: Código -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Codigo" class="form-label fw-semibold">
+                                <i class="bi bi-upc-scan me-1"></i> Código de barras <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-3 rounded-end-0 bg-light">
+                                    <i class="bi bi-upc-scan text-secondary"></i>
+                                </span>
+                                <input asp-for="Codigo" class="form-control form-control-lg rounded-3 rounded-start-0"
+                                       placeholder="Ej: 750123456789" />
+                            @*     <button class="btn btn-outline-secondary rounded-3 rounded-start-0" type="button"
+                                        onclick="generateRandomCode()" title="Generar código aleatorio">
+                                    <i class="bi bi-shuffle"></i> Aleatorio
+                                </button> *@
+                                <button class="btn btn-outline-secondary rounded-3 rounded-start-0" type="button"
+                                        onclick="generateRandomCode(this)" title="Generar código aleatorio">
+                                    <i class="bi bi-shuffle"></i> Aleatorio
+                                </button>
+
+                            </div>
+                            <span asp-validation-for="Codigo" class="text-danger small mt-1 d-block"></span>
+                            <div class="form-text">
+                                <i class="bi bi-upc-scan"></i> Código único del producto (puedes generar uno aleatorio)
+                            </div>
+                        </div>
+
+                        <!-- Campo: Precio -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Precio" class="form-label fw-semibold">
+                                <i class="bi bi-currency-dollar me-1"></i> Precio <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-3 rounded-end-0 bg-light">$</span>
+                                <input asp-for="Precio" class="form-control form-control-lg rounded-3 rounded-start-0"
+                                       placeholder="0.00" step="0.01" min="0" />
+                                <span class="input-group-text rounded-3 rounded-start-0 bg-light">MXN</span>
+                            </div>
+                            <span asp-validation-for="Precio" class="text-danger small mt-1 d-block"></span>
+                            <div class="form-text">
+                                <i class="bi bi-calculator"></i> Precio en pesos mexicanos (ejemplo: 25.50)
+                            </div>
+                        </div>
+
+                        <!-- Campo: Stock inicial -->
+                        <div class="form-group mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-box-seam me-1"></i> Stock inicial <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <button type="button" class="btn btn-outline-secondary rounded-3 rounded-end-0"
+                                        onclick="decrementStock()">
+                                    <i class="bi bi-dash-lg"></i>
+                                </button>
+                                <input type="number" id="stockInput" name="stock" class="form-control form-control-lg text-center"
+                                       min="0" required value="0" step="1" />
+                                <button type="button" class="btn btn-outline-secondary rounded-3 rounded-start-0"
+                                        onclick="incrementStock()">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Cantidad inicial en inventario (puedes ajustar después)
+                            </div>
+                        </div>
+
+                        <!-- Campo adicional: Categoría (opcional - si tienes en tu modelo) -->
+                        <div class="form-group mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-tags me-1"></i> Categoría (opcional)
+                            </label>
+                            <select class="form-select form-control-lg rounded-3" name="categoria">
+                                <option value="">Seleccionar categoría...</option>
+                                <option value="Lácteos">🥛 Lácteos</option>
+                                <option value="Panadería">🍞 Panadería</option>
+                                <option value="Bebidas">🥤 Bebidas</option>
+                                <option value="Abarrotes">🥫 Abarrotes</option>
+                                <option value="Limpieza">🧹 Limpieza</option>
+                                <option value="Higiene">🧴 Higiene personal</option>
+                            </select>
+                        </div>
+
+                        <!-- Indicador de campos requeridos -->
+                        <div class="alert alert-light border rounded-3 mb-4 py-2">
+                            <small class="text-muted">
+                                <i class="bi bi-asterisk text-danger"></i> Campos obligatorios
+                            </small>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex gap-3 mt-4 pt-2">
+                            <button type="submit" class="btn btn-success flex-grow-1 btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-check-lg"></i> Crear producto
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-3">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tarjeta de consejos -->
+            <div class="card border-0 shadow-sm rounded-3 mt-4 bg-gradient-light">
+                <div class="card-body p-3">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-lightbulb text-warning fs-4 me-3"></i>
+                                <div>
+                                    <strong class="d-block">Consejos útiles</strong>
+                                    <small class="text-muted">Usa códigos únicos para evitar duplicados y precios competitivos para mejores ventas</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                            <small class="text-muted">
+                                <i class="bi bi-clock-history"></i> @DateTime.Now.ToString("dd/MM/yyyy")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Función para incrementar stock
+        function incrementStock() {
+            var input = document.getElementById('stockInput');
+            var currentValue = parseInt(input.value);
+            if (!isNaN(currentValue)) {
+                input.value = currentValue + 1;
+            } else {
+                input.value = 1;
+            }
+        }
+
+        // Función para decrementar stock
+        function decrementStock() {
+            var input = document.getElementById('stockInput');
+            var currentValue = parseInt(input.value);
+            if (!isNaN(currentValue) && currentValue > 0) {
+                input.value = currentValue - 1;
+            } else if (currentValue > 0) {
+                input.value = 0;
+            }
+        }
+
+        // Validar que el stock no sea negativo
+        document.getElementById('stockInput').addEventListener('change', function() {
+            if (this.value < 0 || isNaN(this.value)) {
+                this.value = 0;
+            }
+        });
+
+        // Generar código aleatorio
+        function generateRandomCode() {
+            const prefixes = ['750', '751', '752', '753', '754'];
+    const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+
+    let randomNumbers = '';
+    for (let i = 0; i < 9; i++) {
+        randomNumbers += Math.floor(Math.random() * 10);
+    }
+
+    const randomCode = randomPrefix + randomNumbers;
+
+    // 🔥 AQUÍ el cambio importante
+    document.getElementById('Codigo').value = randomCode;
+
+    // Animación del botón
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="bi bi-check"></i> Generado';
+
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+    }, 1500);
+        }
+
+        // Validación de precio antes de enviar
+        document.getElementById('createForm').addEventListener('submit', function(e) {
+            const precioInput = document.querySelector('input[asp-for="Precio"]');
+            const precio = parseFloat(precioInput.value);
+
+            if (isNaN(precio) || precio < 0) {
+                e.preventDefault();
+                alert('Por favor, ingresa un precio válido mayor o igual a 0');
+                precioInput.focus();
+                return false;
+            }
+
+            const stockInput = document.getElementById('stockInput');
+            const stock = parseInt(stockInput.value);
+
+            if (isNaN(stock) || stock < 0) {
+                e.preventDefault();
+                alert('Por favor, ingresa un stock válido');
+                stockInput.focus();
+                return false;
+            }
+
+            // Mostrar mensaje de carga
+            const submitBtn = document.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Creando...';
+            submitBtn.disabled = true;
+        });
+
+        // Formatear precio mientras se escribe
+        document.querySelector('input[asp-for="Precio"]').addEventListener('input', function(e) {
+            let value = this.value.replace(/[^0-9.]/g, '');
+            if (value.split('.').length > 2) {
+                value = value.replace(/\.+$/, '');
+            }
+            this.value = value;
+        });
+
+        // Validación en tiempo real del código (evitar duplicados - llamada AJAX opcional)
+        document.querySelector('input[asp-for="Codigo"]').addEventListener('blur', function() {
+            const code = this.value;
+            if (code && code.length > 0) {
+                // Aquí podrías hacer una llamada AJAX para verificar si el código ya existe
+                console.log('Validando código:', code);
+                // Simulación: cambiar color del borde si es muy corto
+                if (code.length < 8) {
+                    this.style.borderColor = '#ffc107';
+                } else {
+                    this.style.borderColor = '#ced4da';
+                }
+            }
+        });
+    </script>
+}
+
+<!-- Estilos adicionales -->
+<style>
+    /* Animación de entrada */
+    .card {
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Estilos de formulario */
+    .form-control:focus, .form-select:focus {
+        border-color: #11998e;
+        box-shadow: 0 0 0 0.2rem rgba(17, 153, 142, 0.25);
+    }
+
+    /* Botón crear */
+    .btn-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+        }
+
+    /* Botón cancelar */
+    .btn-outline-secondary:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Botones de stock */
+    .input-group .btn {
+        transition: all 0.2s ease;
+    }
+
+        .input-group .btn:hover {
+            background-color: #e9ecef;
+            transform: scale(1.05);
+        }
+
+    /* Mejora para inputs numéricos */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        opacity: 0.5;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .btn-lg {
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem;
+        }
+
+        .input-group-text {
+            font-size: 0.9rem;
+        }
+    }
+
+    /* Animación de carga */
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.6;
+        }
+    }
+
+    button:disabled {
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    /* Tooltips visuales */
+    .form-text i {
+        margin-right: 4px;
+    }
+</style>
