@@ -1,12 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Carlos Alfredo\\Desktop\\Carrera_Ing_Sistemas_Computacionales\\8_Semestre\\MetodologiasParaElDesarrolloAgil\\Parcial2\\MiniMarket\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{9C34EC9B-F205-428A-9A45-58E81F75B31E}|MiniMarket\\MiniMarket.csproj|c:\\users\\carlos alfredo\\desktop\\carrera_ing_sistemas_computacionales\\8_semestre\\metodologiasparaeldesarrolloagil\\parcial2\\minimarket\\minimarket\\controllers\\productocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9C34EC9B-F205-428A-9A45-58E81F75B31E}|MiniMarket\\MiniMarket.csproj|solutionrelative:minimarket\\controllers\\productocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -14,24 +9,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ProductoController.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Alfredo\\Desktop\\Carrera_Ing_Sistemas_Computacionales\\8_Semestre\\MetodologiasParaElDesarrolloAgil\\Parcial2\\MiniMarket\\MiniMarket\\Controllers\\ProductoController.cs",
-              "RelativeDocumentMoniker": "MiniMarket\\Controllers\\ProductoController.cs",
-              "ToolTip": "C:\\Users\\Carlos Alfredo\\Desktop\\Carrera_Ing_Sistemas_Computacionales\\8_Semestre\\MetodologiasParaElDesarrolloAgil\\Parcial2\\MiniMarket\\MiniMarket\\Controllers\\ProductoController.cs",
-              "RelativeToolTip": "MiniMarket\\Controllers\\ProductoController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-26T02:45:28.155Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         }

@@ -14,6 +14,7 @@
     <WebStackScaffolding_DbContextTypeFullName>MiniMarket.Models.MiniMarketContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_IsViewGenerationSelected>True</WebStackScaffolding_IsViewGenerationSelected>
+    <NameOfLastUsedPublishProfile>C:\Users\Carlos Alfredo\Desktop\Carrera_Ing_Sistemas_Computacionales\8_Semestre\MetodologiasParaElDesarrolloAgil\Parcial2\MiniMarket\MiniMarket\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
