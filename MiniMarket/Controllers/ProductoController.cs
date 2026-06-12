@@ -23,7 +23,11 @@ namespace MiniMarket.Controllers
         // GET: Producto
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Productos.ToListAsync());
+            var productos = _context.Productos
+                .Include(p => p.Inventarios)
+                .ToListAsync();
+            return View( await productos);
+            //return View(await _context.Productos.ToListAsync());
         }
 
 
