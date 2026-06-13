@@ -8,5 +8,6 @@
         public int TotalProductos { get; set; }
         public int TotalVenta { get;set; }
         public int TotalIngresos { get; set; }
+        public List<Producto> UltimosProductos { get; set; } = new();
     }
 }
