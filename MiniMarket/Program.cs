@@ -31,7 +31,7 @@ app.UseStaticFiles();
 app.MapControllerRoute(
     name: "default",
      //pattern: "{controller=Home}/{action=Index}/{id?}")
-     pattern: "{controller=Account}/{action=Login}/{id?}");
+     pattern: "{controller=Autenticacion}/{action=Login}/{id?}");
     //.WithStaticAssets();
 
 //using (var scope = app.Services.CreateScope())
