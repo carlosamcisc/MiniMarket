@@ -148,11 +148,30 @@
             </div>
 
             <div class="row g-4" id="ultimosProductos">
-                <div class="col-12 text-center">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
+
+                @if (ViewBag.UltimosProductos == null)
+                {
+                    <div class="col-12 text-center">
+                        <div class="spinner-border text-primary" role="status"></div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    @foreach (var producto in ViewBag.UltimosProductos)
+                    {
+                        <div class="col-md-4 col-lg-3">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-box-seam fs-1 text-primary"></i>
+                                    <h5 class="mt-3">@producto.Nombre</h5>
+                                    <p class="text-muted">@producto.Codigo</p>
+                                    <h6 class="text-success">$@producto.Precio.ToString("N2")</h6>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
             </div>
         </div>
     </div>
@@ -175,131 +194,6 @@
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    // Cargar estadísticas al iniciar
-    document.addEventListener('DOMContentLoaded', function() {
-        cargarEstadisticas();
-        cargarUltimosProductos();
-    });
-
-    // Función para cargar estadísticas
-    function cargarEstadisticas() {
-        // Aquí puedes hacer una llamada AJAX a tu API para obtener datos reales
-        // Por ahora usamos datos de ejemplo
-        fetch('/api/estadisticas')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('totalProductos').innerText = data.totalProductos || 0;
-                document.getElementById('totalVentas').innerText = data.totalVentas || 0;
-                document.getElementById('ingresosTotales').innerText = '$' + (data.ingresosTotales || 0).toLocaleString();
-            })
-            .catch(error => {
-                // Datos de ejemplo si no hay API
-                document.getElementById('totalProductos').innerText = '24';
-                document.getElementById('totalVentas').innerText = '156';
-                document.getElementById('ingresosTotales').innerText = '$12,450';
-                console.log('Usando datos de ejemplo');
-            });
-    }
-
-    // Función para cargar últimos productos
-    function cargarUltimosProductos() {
-        fetch('/api/ultimos-productos')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('ultimosProductos');
-                container.innerHTML = '';
-
-                if (data && data.length > 0) {
-                    data.forEach(producto => {
-                        container.innerHTML += `
-                            <div class="col-md-3">
-                                <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
-                                    <div class="card-body text-center p-3">
-                                        <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
-                                            <i class="bi bi-box fs-2 text-primary"></i>
-                                        </div>
-                                        <h6 class="fw-bold mb-1">${producto.nombre}</h6>
-                                        <p class="text-muted small">Código: ${producto.codigo}</p>
-                                        <p class="text-success fw-bold fs-5">$${producto.precio}</p>
-                                        <a href="/Producto/Details/${producto.id}" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                } else {
-                    container.innerHTML = `
-                        <div class="col-12 text-center">
-                            <p class="text-muted">No hay productos disponibles</p>
-                            <a href="/Producto/Create" class="btn btn-primary">Agregar primer producto</a>
-                        </div>
-                    `;
-                }
-            })
-            .catch(error => {
-                // Datos de ejemplo
-                const container = document.getElementById('ultimosProductos');
-                container.innerHTML = `
-                    <div class="col-md-3">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
-                            <div class="card-body text-center p-3">
-                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
-                                    <i class="bi bi-box fs-2 text-primary"></i>
-                                </div>
-                                <h6 class="fw-bold mb-1">Leche Entera</h6>
-                                <p class="text-muted small">Código: 750123456789</p>
-                                <p class="text-success fw-bold fs-5">$25.50</p>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
-                            <div class="card-body text-center p-3">
-                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
-                                    <i class="bi bi-box fs-2 text-primary"></i>
-                                </div>
-                                <h6 class="fw-bold mb-1">Pan Integral</h6>
-                                <p class="text-muted small">Código: 750987654321</p>
-                                <p class="text-success fw-bold fs-5">$18.00</p>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
-                            <div class="card-body text-center p-3">
-                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
-                                    <i class="bi bi-box fs-2 text-primary"></i>
-                                </div>
-                                <h6 class="fw-bold mb-1">Arroz 1kg</h6>
-                                <p class="text-muted small">Código: 750456789123</p>
-                                <p class="text-success fw-bold fs-5">$22.00</p>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 product-card">
-                            <div class="card-body text-center p-3">
-                                <div class="rounded-circle bg-light d-inline-flex p-3 mb-2">
-                                    <i class="bi bi-box fs-2 text-primary"></i>
-                                </div>
-                                <h6 class="fw-bold mb-1">Aceite Vegetal</h6>
-                                <p class="text-muted small">Código: 750789123456</p>
-                                <p class="text-success fw-bold fs-5">$35.00</p>
-                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-    }
-</script>
 
 <style>
     /* Hero section */
