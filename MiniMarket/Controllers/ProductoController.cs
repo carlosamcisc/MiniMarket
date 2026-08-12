@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Tasks.Deployment.Bootstrapper;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace MiniMarket.Controllers
 {
+    [Authorize]
     public class ProductoController : Controller
     {
         private readonly MiniMarketContext _context;
@@ -49,7 +51,7 @@ namespace MiniMarket.Controllers
             return View("Index", await productos.ToListAsync());
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

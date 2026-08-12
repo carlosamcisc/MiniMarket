@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MiniMarket.Models;
 
@@ -9,6 +10,15 @@ builder.Services.AddDbContext<MiniMarketContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("miniMarket"));
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Autenticacion/Login";
+        options.AccessDeniedPath = "/Autenticacion/Login";
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+    });
 
 var app = builder.Build();
 
@@ -23,6 +33,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 //app.MapStaticAssets();
@@ -41,7 +52,7 @@ app.MapControllerRoute(
 //    //  crea la base de datos si no existe
 //    db.Database.EnsureCreated();
 //}
-//crear/actualizar BD automáticamente
+//crear/actualizar BD automï¿½ticamente
 //using (var scope = app.Services.CreateScope())
 //{
 //    var db = scope.ServiceProvider.GetRequiredService<MiniMarketContext>();
