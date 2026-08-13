@@ -12,6 +12,7 @@ Sistema de punto de venta (POS) para un minimarket, desarrollado con **ASP.NET C
 - [Ejecución](#ejecución)
 - [Ejecución con Docker](#ejecución-con-docker)
 - [Modelo de datos](#modelo-de-datos)
+- [Roles y permisos](#roles-y-permisos)
 - [Roadmap / Pendientes](#roadmap--pendientes)
 
 ## Características
@@ -20,7 +21,9 @@ Sistema de punto de venta (POS) para un minimarket, desarrollado con **ASP.NET C
 - **Control de inventario**: cada producto lleva su stock asociado y se descuenta automáticamente al vender.
 - **Registro de ventas**: carrito de venta con validación de stock disponible y transacción atómica en base de datos.
 - **Ticket en PDF**: al confirmar una venta se genera un comprobante imprimible (formato de recibo angosto) con [iText7](https://itextpdf.com/).
-- **Autenticación de usuarios**: login contra la tabla `usuarios` con contraseñas hasheadas (PBKDF2-HMACSHA256) y sesión por cookie; redirección según rol (`admin`, `vendedor`, `gerente`). Las rutas de productos, ventas e inicio requieren sesión iniciada.
+- **Autenticación de usuarios**: login contra la tabla `usuarios` con contraseñas hasheadas (PBKDF2-HMACSHA256) y sesión por cookie de 8 horas (`SlidingExpiration`).
+- **Control de acceso por rol**: cada controlador exige un rol específico vía `[Authorize(Roles = ...)]`; si el usuario no tiene permiso se le redirige a una vista de acceso denegado. Ver [Roles y permisos](#roles-y-permisos).
+- **Gestión de usuarios**: el rol Administrador puede dar de alta nuevos usuarios (nombre, correo, contraseña y rol) desde `Usuario/Create`.
 
 ## Tecnologías
 
@@ -35,9 +38,10 @@ Sistema de punto de venta (POS) para un minimarket, desarrollado con **ASP.NET C
 
 ```
 MiniMarket/
-├── Controllers/         # ProductoController, VentaController, AutenticacionController, HomeController
+├── Controllers/         # ProductoController, VentaController, AutenticacionController, HomeController, UsuarioController
 ├── Models/               # Entidades EF Core (Producto, Venta, DetalleVentum, Inventario, Movimiento, Usuario, Role)
 │   └── ViewModels/
+├── Services/             # PasswordHasher (hash y verificación de contraseñas, PBKDF2-HMACSHA256)
 ├── Views/                # Vistas Razor (.cshtml) por controlador
 ├── wwwroot/              # Archivos estáticos (css, js, lib)
 ├── Dockerfile
@@ -119,15 +123,26 @@ docker run -p 8080:8080 -p 8081:8081 minimarket
 | `usuarios`        | Usuarios del sistema (correo único, contraseña, rol)                |
 | `roles`           | Roles de usuario                                                    |
 
+## Roles y permisos
+
+Cada controlador restringe el acceso por rol con `[Authorize(Roles = ...)]`. Si el usuario autenticado no tiene el rol requerido, se le redirige a `Autenticacion/AccessDenied`.
+
+| Controlador | Roles permitidos          |
+|-------------|----------------------------|
+| `Home`      | Administrador               |
+| `Producto`  | Administrador, Gerente      |
+| `Venta`     | Administrador, Vendedor     |
+| `Usuario`   | Administrador                |
+
 ## Usuarios de prueba
 
 El script `db_minimarket.sql` incluye usuarios semilla (contraseñas ya hasheadas, no en texto plano) para poder iniciar sesión tras crear la base de datos:
 
-| Correo                     | Contraseña   | Rol       |
-|-----------------------------|--------------|-----------|
-| admin@minimarket.com        | admin123     | admin     |
-| vendedor@minimarket.com     | vender123    | vendedor  |
-| gerente@minimarket.com      | gerente123   | gerente   |
+| Correo                     | Contraseña   | Rol            |
+|-----------------------------|--------------|-----------------|
+| admin@minimarket.com        | admin123     | Administrador   |
+| vendedor@minimarket.com     | vender123    | Vendedor        |
+| gerente@minimarket.com      | gerente123   | Gerente         |
 
 > Cámbialas antes de usar el sistema en un entorno real.
 
@@ -135,4 +150,4 @@ El script `db_minimarket.sql` incluye usuarios semilla (contraseñas ya hasheada
 
 - Registrar movimientos de inventario (`movimientos`) al vender o reabastecer.
 - Migraciones de EF Core automatizadas en lugar del script `.sql` manual.
-- Agregar protección CSRF (antiforgery token) al formulario de login y a las peticiones POST de `Venta`.
+- Agregar protección CSRF (antiforgery token) al formulario de login y a las peticiones POST de `Venta` (`Producto` y `Usuario` ya lo tienen).
