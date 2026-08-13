@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Acceso denegado";
+    var rol = (string)(ViewBag.Rol ?? "");
+    var (controller, action) = rol.ToLowerInvariant() switch
+    {
+        "vendedor" => ("Venta", "create"),
+        "gerente" => ("Producto", "Index"),
+        _ => ("Home", "Index")
+    };
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
+                            <i class="bi bi-shield-lock-fill text-white fs-2"></i>
+                        </div>
+                        <div>
+                            <h2 class="h4 mb-0 fw-bold text-white">Acceso denegado</h2>
+                            <p class="mb-0 text-white opacity-75 small">Tu rol no tiene permiso para ver esta sección</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-lg-5">
+                    <p class="mb-2">
+                        Tu rol actual es <strong>@(string.IsNullOrEmpty(rol) ? "sin rol asignado" : rol)</strong>,
+                        y no tiene permiso para acceder a
+                        <strong>@(string.IsNullOrEmpty((string)(ViewBag.ReturnUrl ?? "")) ? "esa sección" : (string)ViewBag.ReturnUrl)</strong>.
+                    </p>
+
+                    <div class="alert alert-light border rounded-3 mt-4">
+                        <p class="fw-semibold mb-2"><i class="bi bi-info-circle"></i> Permisos por rol:</p>
+                        <ul class="mb-0">
+                            <li><strong>Administrador</strong>: acceso completo al sistema (inicio, productos, ventas y gestión de usuarios).</li>
+                            <li><strong>Gerente</strong>: gestión de productos.</li>
+                            <li><strong>Vendedor</strong>: registro de ventas únicamente.</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4 pt-2">
+                        <a asp-controller="@controller" asp-action="@action" class="btn btn-primary btn-lg rounded-3 shadow-sm">
+                            <i class="bi bi-arrow-left-circle"></i> Ir a mi sección
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

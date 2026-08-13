@@ -8,6 +8,7 @@ using iText.Layout.Element;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using iText.Layout.Properties;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniMarket.Models;
@@ -17,6 +18,7 @@ using System.IO;
 
 namespace MiniMarket.Controllers
 {
+    [Authorize(Roles = "Administrador,Vendedor")]
     public class VentaController : Controller
     {
         private readonly MiniMarketContext _context;
