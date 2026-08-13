@@ -6,7 +6,7 @@ using MiniMarket.Models.ViewModels;
 
 namespace MiniMarket.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

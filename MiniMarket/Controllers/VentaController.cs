@@ -18,7 +18,7 @@ using System.IO;
 
 namespace MiniMarket.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador,Vendedor")]
     public class VentaController : Controller
     {
         private readonly MiniMarketContext _context;

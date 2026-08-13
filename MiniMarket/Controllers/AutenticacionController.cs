@@ -74,5 +74,12 @@ namespace MiniMarket.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Autenticacion");
         }
+
+        public IActionResult AccessDenied(string? returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Rol = User.FindFirst(ClaimTypes.Role)?.Value ?? "";
+            return View();
+        }
     }
 }

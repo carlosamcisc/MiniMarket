@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MiniMarket.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador,Gerente")]
     public class ProductoController : Controller
     {
         private readonly MiniMarketContext _context;
