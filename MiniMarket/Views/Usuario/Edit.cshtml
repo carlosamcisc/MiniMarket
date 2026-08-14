@@ -1,5 +1,6 @@
+@model MiniMarket.Models.Usuario
 @{
-    ViewData["Title"] = "Crear Usuario";
+    ViewData["Title"] = "Editar Usuario";
 }
 
 <div class="container py-4">
@@ -11,46 +12,42 @@
                 <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
-                            <i class="bi bi-person-plus-fill text-white fs-2"></i>
+                            <i class="bi bi-pencil-square text-white fs-2"></i>
                         </div>
                         <div>
-                            <h2 class="h4 mb-0 fw-bold text-white">Nuevo Usuario</h2>
-                            <p class="mb-0 text-white opacity-75 small">Registra un vendedor o gerente para el sistema</p>
+                            <h2 class="h4 mb-0 fw-bold text-white">Editar Usuario</h2>
+                            <p class="mb-0 text-white opacity-75 small">Actualiza los datos de @Model.Nombre</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-body p-4 p-lg-5">
 
-                    @if (TempData["Success"] != null)
-                    {
-                        <div class="alert alert-success" role="alert">
-                            <i class="bi bi-check-circle"></i> @TempData["Success"]
-                        </div>
-                    }
-
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                    <form asp-action="Create" method="post">
+                    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
                         <div class="form-group mb-4">
                             <label class="form-label fw-semibold">
                                 <i class="bi bi-person me-1"></i> Nombre <span class="text-danger">*</span>
                             </label>
-                            <input name="nombre" class="form-control form-control-lg rounded-3" placeholder="Nombre completo" required />
+                            <input name="nombre" value="@Model.Nombre" class="form-control form-control-lg rounded-3" placeholder="Nombre completo" required />
                         </div>
 
                         <div class="form-group mb-4">
                             <label class="form-label fw-semibold">
                                 <i class="bi bi-envelope me-1"></i> Correo <span class="text-danger">*</span>
                             </label>
-                            <input type="email" name="correo" class="form-control form-control-lg rounded-3" placeholder="correo@minimarket.com" required />
+                            <input type="email" name="correo" value="@Model.Correo" class="form-control form-control-lg rounded-3" placeholder="correo@minimarket.com" required />
                         </div>
 
                         <div class="form-group mb-4">
                             <label class="form-label fw-semibold">
-                                <i class="bi bi-lock me-1"></i> Contraseña <span class="text-danger">*</span>
+                                <i class="bi bi-lock me-1"></i> Nueva contraseña
                             </label>
-                            <input type="password" name="password" class="form-control form-control-lg rounded-3" placeholder="Contraseña" required minlength="6" />
+                            <input type="password" name="password" class="form-control form-control-lg rounded-3" placeholder="Dejar en blanco para no cambiarla" minlength="6" />
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Por seguridad, la contraseña actual no se puede consultar. Completa este campo solo si deseas restablecerla.
+                            </div>
                         </div>
 
                         <div class="form-group mb-4">
@@ -60,14 +57,11 @@
                             <select name="rolId" class="form-select form-select-lg rounded-3" asp-items="ViewBag.Roles" required>
                                 <option value="">Seleccionar rol...</option>
                             </select>
-                            <div class="form-text">
-                                <i class="bi bi-info-circle"></i> El rol Administrador no se asigna desde aquí.
-                            </div>
                         </div>
 
                         <div class="d-flex gap-3 mt-4 pt-2">
                             <button type="submit" class="btn btn-primary flex-grow-1 btn-lg rounded-3 shadow-sm">
-                                <i class="bi bi-check-lg"></i> Crear usuario
+                                <i class="bi bi-check-lg"></i> Guardar cambios
                             </button>
                             <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-3">
                                 <i class="bi bi-arrow-left"></i> Cancelar
