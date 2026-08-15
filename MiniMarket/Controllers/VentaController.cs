@@ -111,10 +111,19 @@ namespace MiniMarket.Controllers
             }
         }
         
-        public IActionResult Confirmacion(int id)
+        public async Task<IActionResult> Confirmacion(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            var venta = await _context.Ventas
+                .Include(v => v.DetalleVenta)
+                    .ThenInclude(d => d.Producto)
+                .FirstOrDefaultAsync(v => v.Id == id);
+
+            if (venta == null)
+            {
+                return NotFound("venta no encontrada");
+            }
+
+            return View(venta);
         }
         public async Task<IActionResult> Ticket(int id)
         {

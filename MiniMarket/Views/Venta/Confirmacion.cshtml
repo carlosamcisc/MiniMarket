@@ -14,13 +14,14 @@
         volver
     </a>
 </div> *@
+@model MiniMarket.Models.Venta
 @{
     ViewData["Title"] = "Venta realizada";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
+        <div class="col-md-9 col-lg-7">
             <!-- Tarjeta principal -->
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-5 text-center">
@@ -44,13 +45,51 @@
                     <!-- Detalles adicionales opcionales -->
                     <div class="mb-4 p-3 bg-light rounded-3">
                         <small class="text-muted">
-                            <i class="bi bi-clock-history"></i> Fecha: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                            <i class="bi bi-hash"></i> Folio: @Model.Id
+                            &nbsp;|&nbsp;
+                            <i class="bi bi-clock-history"></i> Fecha: @(Model.Fecha?.ToString("dd/MM/yyyy HH:mm"))
                         </small>
+                    </div>
+
+                    <!-- Resumen de la venta -->
+                    <div class="mb-4 text-start">
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-receipt"></i> Resumen de la venta
+                        </h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th class="text-center">Cantidad</th>
+                                        <th class="text-end">Precio unitario</th>
+                                        <th class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in Model.DetalleVenta)
+                                    {
+                                        <tr>
+                                            <td>@(d.Producto?.Nombre ?? "n/a")</td>
+                                            <td class="text-center">@d.Cantidad</td>
+                                            <td class="text-end">$@d.Precio?.ToString("N2")</td>
+                                            <td class="text-end">$@((d.Cantidad * d.Precio)?.ToString("N2"))</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-light fw-bold">
+                                        <td colspan="3" class="text-end">Total:</td>
+                                        <td class="text-end text-success fs-6">$@Model.Total?.ToString("N2")</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- Botones de acción -->
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                        <a asp-action="Ticket" asp-route-id="@Context.Request.RouteValues["id"]"
+                        <a asp-action="Ticket" asp-route-id="@Model.Id"
                            class="btn btn-primary btn-lg px-4 py-2 rounded-3 shadow-sm">
                             <i class="bi bi-download"></i> Descargar ticket
                         </a>
