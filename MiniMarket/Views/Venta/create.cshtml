@@ -1,5 +1,6 @@
 ﻿@using MiniMarket.Models.ViewModels;
 @using System.Security.Claims;
+@using System.Text.Json;
 @model ventaViewModel;
 @{
     ViewData["HideNavbar"] = true;
@@ -102,28 +103,19 @@
                                 </h5>
 
                                 <div class="row g-3 align-items-end">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 position-relative">
                                         <label class="form-label fw-semibold">
-                                            <i class="bi bi-box"></i> Producto
+                                            <i class="bi bi-search"></i> Producto
                                         </label>
-                                        <select id="producto_id" class="form-select form-select-lg rounded-3">
-                                            <option value="">Seleccionar producto...</option>
-                                            @foreach (var p in Model.productos)
-                                            {
-                                                var stock = p.Inventarios.Sum(i => i.Stock);
-                                                if (stock > 0)
-                                                {
-                                                    <option value="@p.Id"
-                                                            data-precio="@p.Precio"
-                                                            data-stock="@stock"
-                                                            data-nombre="@p.Nombre">
-                                                        @p.Nombre - $@p.Precio.ToString("N2") (Stock: @stock)
-                                                    </option>
-                                                }
-                                            }
-                                        </select>
+                                        <input type="text" id="buscarProducto" autocomplete="off"
+                                               class="form-control form-control-lg rounded-3"
+                                               placeholder="Buscar por nombre o código..." />
+                                        <input type="hidden" id="producto_id" />
+                                        <div id="listaResultados" class="list-group shadow-sm rounded-3 mt-1"
+                                             style="position:absolute; z-index:1000; width:100%; max-height:280px; overflow-y:auto; display:none;">
+                                        </div>
                                         <div class="form-text">
-                                            <i class="bi bi-info-circle"></i> Solo se muestran productos con stock disponible
+                                            <i class="bi bi-info-circle"></i> Escribe el nombre o código del producto. Solo se muestran productos con stock disponible
                                         </div>
                                     </div>
 
@@ -253,22 +245,103 @@
 
 <script>
     let detalles = [];
+    let productoSeleccionado = null;
 
-    // Función para agregar producto
-    function agregarProducto() {
-        let select = document.getElementById("producto_id");
-        let selectedOption = select.options[select.selectedIndex];
+    // Catálogo de productos con stock disponible (para búsqueda por nombre o código)
+    const productosData = [
+    @foreach (var p in Model.productos)
+    {
+        var stock = p.Inventarios.Sum(i => i.Stock);
+        if (stock > 0)
+        {
+            <text>{ id: @p.Id, nombre: @Html.Raw(JsonSerializer.Serialize(p.Nombre)), codigo: @Html.Raw(JsonSerializer.Serialize(p.Codigo ?? "")), precio: @p.Precio, stock: @stock },</text>
+        }
+    }
+    ];
 
-        // Validar que se haya seleccionado un producto
-        if (!selectedOption.value) {
-            mostrarAlerta('warning', 'Por favor, selecciona un producto');
+    const buscarInput = document.getElementById('buscarProducto');
+    const listaResultados = document.getElementById('listaResultados');
+    const productoIdInput = document.getElementById('producto_id');
+
+    function normalizar(texto) {
+        return (texto ?? '').toString().toLowerCase().trim();
+    }
+
+    function renderResultados(coincidencias) {
+        if (coincidencias.length === 0) {
+            listaResultados.innerHTML = `<div class="list-group-item text-muted">Sin resultados</div>`;
+        } else {
+            listaResultados.innerHTML = coincidencias.map(p => `
+                <button type="button" class="list-group-item list-group-item-action"
+                        data-id="${p.id}" data-nombre="${p.nombre}" data-precio="${p.precio}" data-stock="${p.stock}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span><strong>${p.nombre}</strong>${p.codigo ? ' <span class="text-muted small">Cod: ' + p.codigo + '</span>' : ''}</span>
+                        <span class="text-nowrap ms-2">$${p.precio.toFixed(2)} <span class="text-muted small">(Stock: ${p.stock})</span></span>
+                    </div>
+                </button>
+            `).join('');
+        }
+        listaResultados.style.display = 'block';
+    }
+
+    buscarInput.addEventListener('input', function () {
+        productoSeleccionado = null;
+        productoIdInput.value = '';
+
+        const termino = normalizar(this.value);
+        if (!termino) {
+            listaResultados.style.display = 'none';
+            listaResultados.innerHTML = '';
             return;
         }
 
-        let productoId = parseInt(selectedOption.value);
-        let nombre = selectedOption.dataset.nombre || selectedOption.text.split(' - ')[0];
-        let precio = parseFloat(selectedOption.dataset.precio);
-        let stockDisponible = parseInt(selectedOption.dataset.stock);
+        const coincidencias = productosData.filter(p =>
+            normalizar(p.nombre).includes(termino) || normalizar(p.codigo).includes(termino)
+        );
+        renderResultados(coincidencias);
+    });
+
+    buscarInput.addEventListener('focus', function () {
+        if (this.value.trim() && listaResultados.innerHTML) {
+            listaResultados.style.display = 'block';
+        }
+    });
+
+    listaResultados.addEventListener('click', function (e) {
+        let item = e.target.closest('[data-id]');
+        if (!item) return;
+
+        productoSeleccionado = {
+            id: parseInt(item.dataset.id),
+            nombre: item.dataset.nombre,
+            precio: parseFloat(item.dataset.precio),
+            stock: parseInt(item.dataset.stock)
+        };
+        productoIdInput.value = productoSeleccionado.id;
+        buscarInput.value = `${productoSeleccionado.nombre} - $${productoSeleccionado.precio.toFixed(2)} (Stock: ${productoSeleccionado.stock})`;
+        listaResultados.style.display = 'none';
+        document.getElementById('cantidad').focus();
+    });
+
+    // Cerrar la lista de resultados al hacer click fuera
+    document.addEventListener('click', function (e) {
+        if (!buscarInput.contains(e.target) && !listaResultados.contains(e.target)) {
+            listaResultados.style.display = 'none';
+        }
+    });
+
+    // Función para agregar producto
+    function agregarProducto() {
+        // Validar que se haya seleccionado un producto de la búsqueda
+        if (!productoSeleccionado) {
+            mostrarAlerta('warning', 'Por favor, busca y selecciona un producto');
+            return;
+        }
+
+        let productoId = productoSeleccionado.id;
+        let nombre = productoSeleccionado.nombre;
+        let precio = productoSeleccionado.precio;
+        let stockDisponible = productoSeleccionado.stock;
         let cantidad = parseInt(document.getElementById("cantidad").value);
 
         // Validaciones
@@ -309,8 +382,12 @@
             mostrarAlerta('success', `Producto agregado: ${nombre} x${cantidad}`);
         }
 
-        // Resetear selector y cantidad
-        select.value = "";
+        // Resetear buscador y cantidad
+        buscarInput.value = "";
+        productoIdInput.value = "";
+        productoSeleccionado = null;
+        listaResultados.style.display = 'none';
+        listaResultados.innerHTML = '';
         document.getElementById("cantidad").value = "1";
 
         calcularTotal();
@@ -378,14 +455,8 @@
         }
 
         // Verificar stock disponible
-        let select = document.getElementById("producto_id");
-        let stockDisponible = 0;
-        for (let i = 0; i < select.options.length; i++) {
-            if (parseInt(select.options[i].value) === detalles[index].productoId) {
-                stockDisponible = parseInt(select.options[i].dataset.stock);
-                break;
-            }
-        }
+        let productoInfo = productosData.find(p => p.id === detalles[index].productoId);
+        let stockDisponible = productoInfo ? productoInfo.stock : 0;
 
         if (nuevaCantidad > stockDisponible) {
             mostrarAlerta('error', `Stock insuficiente. Solo hay ${stockDisponible} unidades disponibles`);
