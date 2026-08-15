@@ -1,0 +1,55 @@
+@model MiniMarket.Models.Usuario
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <div class="card-header py-3 bg-danger">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
+                            <i class="bi bi-exclamation-triangle-fill text-white fs-2"></i>
+                        </div>
+                        <div>
+                            <h2 class="h4 mb-0 fw-bold text-white">Eliminar Usuario</h2>
+                            <p class="mb-0 text-white opacity-75 small">Esta acción no se puede deshacer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-lg-5">
+
+                    <p>¿Seguro que deseas eliminar al siguiente usuario?</p>
+
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4">Nombre</dt>
+                        <dd class="col-sm-8">@Model.Nombre</dd>
+
+                        <dt class="col-sm-4">Correo</dt>
+                        <dd class="col-sm-8">@Model.Correo</dd>
+
+                        <dt class="col-sm-4">Rol</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge rounded-pill text-bg-secondary">@(Model.Rol?.Nombre ?? "Sin rol")</span>
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-danger flex-grow-1 btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-trash"></i> Sí, eliminar
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-3">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
