@@ -45,7 +45,7 @@ namespace MiniMarket.Controllers
             {
                 productos = productos.Where(p =>
                     p.Nombre.Contains(buscar) ||
-                    p.Codigo.Contains(buscar));
+                    (p.Codigo != null && p.Codigo.Contains(buscar)));
             }
 
             return View("Index", await productos.ToListAsync());

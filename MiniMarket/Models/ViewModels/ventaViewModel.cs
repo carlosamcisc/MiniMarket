@@ -2,6 +2,6 @@
 {
     public class ventaViewModel
     {
-        public List<Producto> productos { get; set; }
+        public required List<Producto> productos { get; set; }
     }
 }

@@ -2,11 +2,8 @@
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
-using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
-using iText.Layout.Element;
-using iText.Layout.Properties;
 using iText.Layout.Properties;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -184,8 +181,8 @@ namespace MiniMarket.Controllers
                 // 📦 productos
                 foreach (var d in detalles)
                 {
-                    var nombre = productos.ContainsKey(d.ProductoId.Value)
-                        ? productos[d.ProductoId.Value]
+                    var nombre = d.ProductoId.HasValue && productos.TryGetValue(d.ProductoId.Value, out var pNombre)
+                        ? pNombre
                         : "n/a";
 
                     // nombre producto (ligeramente más visible)
