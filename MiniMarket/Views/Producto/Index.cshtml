@@ -10,7 +10,7 @@
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
                 <!-- Header -->
-                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-header py-3" style="background: var(--brand-gradient);">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                         <div class="d-flex align-items-center">
                             <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
@@ -68,12 +68,12 @@
                             <table class="table table-hover align-middle mb-0" id="productosTable">
                                 <thead>
                                     <tr class="text-center">
-                                        <th style="background-color: #667eea">#</th>
-                                        <th style="background-color: #667eea">Nombre</th>
-                                        <th style="background-color: #667eea">Código</th>
-                                        <th style="background-color: #667eea">Precio</th>
-                                        <th style="background-color: #667eea">Stock</th>
-                                        <th style="background-color: #667eea">Acciones</th>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Código</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -86,8 +86,8 @@
                                         <tr>
                                             <td class="text-center">@contador</td>
                                             <td>@item.Nombre</td>
-                                            <td class="text-center"><code>@item.Codigo</code></td>
-                                            <td class="text-center text-success fw-bold">$@item.Precio.ToString("N2")</td>
+                                            <td class="text-center">@item.Codigo</td>
+                                            <td class="text-center fw-bold">$@item.Precio.ToString("N2")</td>
                                             <td class="text-center">
                                                 @if (stock == 0)
                                                 {
@@ -103,9 +103,15 @@
                                                 }
                                             </td>
                                             <td class="text-center">
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm text-white">Ver</a>
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Editar
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-eye"></i> Ver
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">
+                                                    <i class="bi bi-trash3"></i> Eliminar
+                                                </a>
                                             </td>
                                         </tr>
                                         contador++;
@@ -129,7 +135,7 @@
 
 <style>
     .table th {
-        background-color: #212529;
+        background-color: var(--brand-600);
         color: white;
         padding: 12px;
     }
@@ -143,12 +149,7 @@
         background-color: rgba(102, 126, 234, 0.05);
     }
 
-    code {
-        background-color: #f8f9fa;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-size: 0.85rem;
-    }
+ 
 
     .btn-sm {
         margin: 0 2px;

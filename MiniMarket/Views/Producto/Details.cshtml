@@ -57,7 +57,7 @@
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
                 <!-- Header con gradiente -->
-                <div class="card-header bg-gradient-info text-white py-3" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="card-header bg-gradient-info text-white py-3" style="background: var(--brand-gradient);">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
                             <i class="bi bi-info-circle-fill fs-2 me-2"></i>
@@ -97,7 +97,7 @@
                             <tbody>
                                 <!-- Nombre -->
                                 <tr class="border-bottom">
-                                    <td class="py-3" style="width: 35%; background-color: #f8f9fa; border-radius: 10px 0 0 10px;">
+                                    <td class="py-3" style="width: 35%; background-color: var(--bg-subtle); border-radius: 10px 0 0 10px;">
                                         <div class="d-flex align-items-center">
                                             <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
                                                 <i class="bi bi-tag text-primary fs-5"></i>
@@ -112,7 +112,7 @@
 
                                 <!-- Código -->
                                 <tr class="border-bottom">
-                                    <td class="py-3" style="background-color: #f8f9fa;">
+                                    <td class="py-3" style="background-color: var(--bg-subtle);">
                                         <div class="d-flex align-items-center">
                                             <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
                                                 <i class="bi bi-upc-scan text-success fs-5"></i>
@@ -127,7 +127,7 @@
 
                                 <!-- Precio -->
                                 <tr class="border-bottom">
-                                    <td class="py-3" style="background-color: #f8f9fa;">
+                                    <td class="py-3" style="background-color: var(--bg-subtle);">
                                         <div class="d-flex align-items-center">
                                             <div class="rounded-circle bg-warning bg-opacity-10 p-2 me-3">
                                                 <i class="bi bi-currency-dollar text-warning fs-5"></i>
@@ -143,7 +143,7 @@
 
                                 <!-- Stock -->
                                 <tr>
-                                    <td class="py-3" style="background-color: #f8f9fa; border-radius: 0 0 0 10px;">
+                                    <td class="py-3" style="background-color: var(--bg-subtle); border-radius: 0 0 0 10px;">
                                         <div class="d-flex align-items-center">
                                             <div class="rounded-circle bg-info bg-opacity-10 p-2 me-3">
                                                 <i class="bi bi-box-seam text-info fs-5"></i>
@@ -255,14 +255,14 @@
 
     /* Botones mejorados */
     .btn-primary {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        background: var(--brand-gradient);
         border: none;
         transition: all 0.3s ease;
     }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
     .btn-outline-secondary:hover {

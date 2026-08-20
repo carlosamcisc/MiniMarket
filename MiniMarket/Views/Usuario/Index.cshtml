@@ -23,7 +23,7 @@
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
                 <!-- Header -->
-                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-header py-3" style="background: var(--brand-gradient);">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                         <div class="d-flex align-items-center">
                             <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
@@ -60,11 +60,11 @@
                             <table class="table table-hover align-middle mb-0" id="usuariosTable">
                                 <thead>
                                     <tr class="text-center">
-                                        <th style="background-color: #667eea">#</th>
-                                        <th style="background-color: #667eea">Nombre</th>
-                                        <th style="background-color: #667eea">Correo</th>
-                                        <th style="background-color: #667eea">Rol</th>
-                                        <th style="background-color: #667eea">Acciones</th>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Rol</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -81,11 +81,17 @@
                                                 <span class="badge rounded-pill text-bg-secondary">@(usuario.Rol?.Nombre ?? "Sin rol")</span>
                                             </td>
                                             <td class="text-center">
-                                                <a asp-action="Details" asp-route-id="@usuario.Id" class="btn btn-info btn-sm text-white">Ver</a>
+                                                <a asp-action="Details" asp-route-id="@usuario.Id" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-eye"></i> Ver
+                                                </a>
                                                 @if (usuario.Rol?.Nombre != "Administrador")
                                                 {
-                                                    <a asp-action="Edit" asp-route-id="@usuario.Id" class="btn btn-warning btn-sm">Editar</a>
-                                                    <a asp-action="Delete" asp-route-id="@usuario.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                                                    <a asp-action="Edit" asp-route-id="@usuario.Id" class="btn btn-primary btn-sm">
+                                                        <i class="bi bi-pencil-square"></i> Editar
+                                                    </a>
+                                                    <a asp-action="Delete" asp-route-id="@usuario.Id" class="btn btn-outline-danger btn-sm">
+                                                        <i class="bi bi-trash3"></i> Eliminar
+                                                    </a>
                                                 }
                                             </td>
                                         </tr>
@@ -110,7 +116,7 @@
 
 <style>
     .table th {
-        background-color: #212529;
+        background-color: var(--brand-600);
         color: white;
         padding: 12px;
     }

@@ -42,7 +42,7 @@
         </nav> *@
         @if (ViewData["HideNavbar"] == null)
         {
-            <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-lg" style="background: var(--brand-gradient);">
                 <div class="container">
                     <!-- Logo y marca -->
                     <a class="navbar-brand fw-bold fs-4" asp-area="" asp-controller="Home" asp-action="Index">
@@ -231,7 +231,7 @@
             }
 
                 .dropdown-item:hover {
-                    background-color: #f8f9fa;
+                    background-color: var(--bg-subtle);
                     transform: translateX(5px);
                 }
 
