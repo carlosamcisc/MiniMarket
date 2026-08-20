@@ -23,7 +23,7 @@ namespace MiniMarket.Controllers
             HomeViewModel vm = new HomeViewModel();
             ViewBag.TotalProductos = _context.Productos.Count();
             ViewBag.TotalVentas = _context.Ventas.Count();
-            ViewBag.TotalIngresos = _context.DetalleVenta.Sum(d => d.Precio);
+            ViewBag.TotalIngresos = _context.Ventas.Sum(v => v.Total);
             ViewBag.UltimosProductos = _context.Productos
                 .OrderByDescending(p => p.Id)
                 .Take(4)
