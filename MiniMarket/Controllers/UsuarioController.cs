@@ -8,7 +8,7 @@ using MiniMarket.Services;
 
 namespace MiniMarket.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize]
     public class UsuarioController : Controller
     {
         private readonly MiniMarketContext _context;
@@ -35,7 +35,30 @@ namespace MiniMarket.Controllers
                 .ToListAsync();
         }
 
+        // GET: Usuario/Perfil
+        public async Task<IActionResult> Perfil()
+        {
+            var id = UsuarioActualId;
+            if (id == null)
+            {
+                return Forbid();
+            }
+
+            var usuario = await _context.Usuarios
+                .Include(u => u.Rol)
+                .Include(u => u.Venta)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return View(usuario);
+        }
+
         // GET: Usuario
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Index()
         {
             var usuarios = await _context.Usuarios
@@ -47,6 +70,7 @@ namespace MiniMarket.Controllers
         }
 
         // GET: Usuario/Details/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int id)
         {
             var usuario = await _context.Usuarios
@@ -63,6 +87,7 @@ namespace MiniMarket.Controllers
         }
 
         // GET: Usuario/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
@@ -85,6 +110,7 @@ namespace MiniMarket.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int id, string nombre, string correo, string? password, int rolId)
         {
             var usuario = await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == id);
@@ -143,6 +169,7 @@ namespace MiniMarket.Controllers
         }
 
         // GET: Usuario/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int id)
         {
             var usuario = await _context.Usuarios
@@ -171,6 +198,7 @@ namespace MiniMarket.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var usuario = await _context.Usuarios
@@ -210,6 +238,7 @@ namespace MiniMarket.Controllers
         }
 
         // GET: Usuario/Create
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Create()
         {
             ViewBag.Roles = new SelectList(await RolesAsignables(), "Id", "Nombre");
@@ -218,6 +247,7 @@ namespace MiniMarket.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Create(string nombre, string correo, string password, int rolId)
         {
             var roles = await RolesAsignables();

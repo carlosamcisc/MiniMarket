@@ -1,0 +1,56 @@
+@model MiniMarket.Models.Usuario
+@{
+    ViewData["Title"] = "Mi perfil";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <div class="card-header py-3" style="background: var(--brand-gradient);">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
+                            <i class="bi bi-person-circle text-white fs-2"></i>
+                        </div>
+                        <div>
+                            <h2 class="h4 mb-0 fw-bold text-white">@Model.Nombre</h2>
+                            <p class="mb-0 text-white opacity-75 small">Información de mi perfil</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-lg-5">
+
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4"><i class="bi bi-person me-1"></i> Nombre</dt>
+                        <dd class="col-sm-8">@Model.Nombre</dd>
+
+                        <dt class="col-sm-4"><i class="bi bi-envelope me-1"></i> Correo</dt>
+                        <dd class="col-sm-8">@Model.Correo</dd>
+
+                        <dt class="col-sm-4"><i class="bi bi-person-badge me-1"></i> Rol</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge rounded-pill text-bg-secondary">@(Model.Rol?.Nombre ?? "Sin rol")</span>
+                        </dd>
+
+                        <dt class="col-sm-4"><i class="bi bi-lock me-1"></i> Contraseña</dt>
+                        <dd class="col-sm-8">
+                            <span class="text-muted">●●●●●●●● (protegida, no se puede visualizar)</span>
+                        </dd>
+
+                        <dt class="col-sm-4"><i class="bi bi-receipt me-1"></i> Ventas registradas</dt>
+                        <dd class="col-sm-8">@Model.Venta.Count</dd>
+                    </dl>
+
+                    <div class="d-flex mt-4 pt-2">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-3 ms-auto">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
