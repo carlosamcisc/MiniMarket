@@ -12,6 +12,7 @@ using MiniMarket.Models;
 using MiniMarket.Models.ViewModels;
 using Newtonsoft.Json;
 using System.IO;
+using System.Security.Claims;
 
 namespace MiniMarket.Controllers
 {
@@ -23,6 +24,15 @@ namespace MiniMarket.Controllers
         public VentaController(MiniMarketContext context)
         {
             _context = context;
+        }
+
+        private int? UsuarioActualId
+        {
+            get
+            {
+                var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                return int.TryParse(idClaim, out var id) ? id : null;
+            }
         }
 
         public IActionResult Index()
@@ -70,7 +80,8 @@ namespace MiniMarket.Controllers
                 var venta = new Venta
                 {
                     Fecha = DateTime.Now,
-                    Total = detalles.Sum(d => d.Precio * d.Cantidad)
+                    Total = detalles.Sum(d => d.Precio * d.Cantidad),
+                    UsuarioId = UsuarioActualId
                 };
 
                 _context.Ventas.Add(venta);
@@ -90,8 +101,16 @@ namespace MiniMarket.Controllers
                     d.VentaId = venta.Id;
                     _context.DetalleVenta.Add(d);
 
-                   
+
                     inv.Stock -= d.Cantidad;
+
+                    _context.Movimientos.Add(new Movimiento
+                    {
+                        ProductoId = d.ProductoId,
+                        Tipo = "salida",
+                        Cantidad = d.Cantidad,
+                        Fecha = DateTime.Now
+                    });
                 }
 
                 await _context.SaveChangesAsync();
@@ -124,7 +143,9 @@ namespace MiniMarket.Controllers
         }
         public async Task<IActionResult> Ticket(int id)
         {
-            var venta = await _context.Ventas.FindAsync(id);
+            var venta = await _context.Ventas
+                .Include(v => v.Usuario)
+                .FirstOrDefaultAsync(v => v.Id == id);
 
             if (venta == null)
             {
@@ -172,6 +193,10 @@ namespace MiniMarket.Controllers
                     .SetFontSize(8));
 
                 document.Add(new Paragraph($"folio: {venta.Id}")
+                    .SetFont(normal)
+                    .SetFontSize(8));
+
+                document.Add(new Paragraph($"vendedor: {venta.Usuario?.Nombre ?? "n/a"}")
                     .SetFont(normal)
                     .SetFontSize(8));
 

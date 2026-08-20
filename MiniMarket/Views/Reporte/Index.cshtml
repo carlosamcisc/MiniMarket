@@ -1,0 +1,309 @@
+@model MiniMarket.Models.ViewModels.ReporteViewModel
+@{
+    ViewData["Title"] = "Estadísticas y Reportes";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <h2 class="fw-bold mb-0"><i class="bi bi-graph-up text-info"></i> Estadísticas y Reportes</h2>
+            <p class="text-muted mb-0">Resumen del rendimiento de tu negocio</p>
+        </div>
+        <a class="btn btn-outline-danger rounded-pill"
+           asp-action="ExportarPdf"
+           asp-route-fechaInicio="@Model.FechaInicio.ToString("yyyy-MM-dd")"
+           asp-route-fechaFin="@Model.FechaFin.ToString("yyyy-MM-dd")">
+            <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+        </a>
+    </div>
+
+    <!-- Filtro de fechas -->
+    <form method="get" asp-action="Index" class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-3">
+            <div class="row g-3 align-items-end">
+                <div class="col-sm-4 col-md-3">
+                    <label class="form-label small text-muted mb-1">Desde</label>
+                    <input type="date" name="fechaInicio" class="form-control" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <label class="form-label small text-muted mb-1">Hasta</label>
+                    <input type="date" name="fechaFin" class="form-control" value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-sm-4 col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">
+                        <i class="bi bi-funnel"></i> Filtrar
+                    </button>
+                    <a asp-action="Index" asp-route-todo="true" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="bi bi-x-circle"></i> Limpiar filtros
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- KPIs -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-cart-check fs-1 text-success"></i>
+                    <h3 class="fw-bold mt-2 mb-0">@Model.TotalVentas</h3>
+                    <p class="text-muted mb-0">Ventas realizadas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-currency-dollar fs-1 text-warning"></i>
+                    <h3 class="fw-bold mt-2 mb-0">$@Model.TotalIngresos.ToString("N2")</h3>
+                    <p class="text-muted mb-0">Ingresos totales</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-receipt fs-1 text-primary"></i>
+                    <h3 class="fw-bold mt-2 mb-0">$@Model.TicketPromedio.ToString("N2")</h3>
+                    <p class="text-muted mb-0">Ticket promedio</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-exclamation-triangle fs-1 text-danger"></i>
+                    <h3 class="fw-bold mt-2 mb-0">@Model.ProductosStockBajo.Count</h3>
+                    <p class="text-muted mb-0">Productos con stock bajo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficas -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Ingresos por día</h5>
+                    @if (Model.VentasPorDia.Any())
+                    {
+                        <canvas id="chartVentasPorDia" height="120"></canvas>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No hay ventas registradas en el período seleccionado.</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Productos más vendidos</h5>
+                    @if (Model.TopProductos.Any())
+                    {
+                        <canvas id="chartTopProductos" height="180"></canvas>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No hay ventas registradas en el período seleccionado.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <!-- Ventas por vendedor -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-person-badge"></i> Desempeño por vendedor</h5>
+                    @if (Model.VentasPorVendedor.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Vendedor</th>
+                                        <th class="text-end">Ventas</th>
+                                        <th class="text-end">Total vendido</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var v in Model.VentasPorVendedor)
+                                    {
+                                        <tr>
+                                            <td>@v.Nombre</td>
+                                            <td class="text-end">@v.NumeroVentas</td>
+                                            <td class="text-end">$@v.TotalVendido.ToString("N2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">Sin ventas en el período seleccionado.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock bajo -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-box-seam"></i> Stock bajo (≤ @Model.UmbralStockBajo unidades)</h5>
+                    @if (Model.ProductosStockBajo.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Código</th>
+                                        <th class="text-end">Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var p in Model.ProductosStockBajo)
+                                    {
+                                        <tr>
+                                            <td>@p.Nombre</td>
+                                            <td>@(p.Codigo ?? "-")</td>
+                                            <td class="text-end">
+                                                <span class="badge bg-danger">@p.Stock</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">Todos los productos tienen stock suficiente.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movimientos de inventario -->
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0"><i class="bi bi-arrow-left-right"></i> Movimientos de inventario</h5>
+                        <div class="small text-muted">
+                            Entradas: <span class="badge bg-success">@Model.TotalEntradas</span>
+                            Salidas: <span class="badge bg-danger">@Model.TotalSalidas</span>
+                        </div>
+                    </div>
+                    @if (Model.MovimientosRecientes.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Producto</th>
+                                        <th>Tipo</th>
+                                        <th class="text-end">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var m in Model.MovimientosRecientes)
+                                    {
+                                        <tr>
+                                            <td>@(m.Fecha?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                            <td>@(m.Producto?.Nombre ?? "-")</td>
+                                            <td>
+                                                @if (string.Equals(m.Tipo, "entrada", StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    <span class="badge bg-success">Entrada</span>
+                                                }
+                                                else if (string.Equals(m.Tipo, "salida", StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    <span class="badge bg-danger">Salida</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">@(m.Tipo ?? "-")</span>
+                                                }
+                                            </td>
+                                            <td class="text-end">@m.Cantidad</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No hay movimientos de inventario registrados en el período seleccionado.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script>
+        @if (Model.VentasPorDia.Any())
+        {
+            <text>
+        new Chart(document.getElementById('chartVentasPorDia'), {
+            type: 'line',
+            data: {
+                labels: [@Html.Raw(string.Join(",", Model.VentasPorDia.Select(v => $"'{v.Fecha:dd/MM}'")))],
+                datasets: [{
+                    label: 'Ingresos ($)',
+                    data: [@string.Join(",", Model.VentasPorDia.Select(v => v.Total.ToString(System.Globalization.CultureInfo.InvariantCulture)))],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.15)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+            </text>
+        }
+
+        @if (Model.TopProductos.Any())
+        {
+            <text>
+        new Chart(document.getElementById('chartTopProductos'), {
+            type: 'bar',
+            data: {
+                labels: [@Html.Raw(string.Join(",", Model.TopProductos.Select(p => $"'{p.Nombre.Replace("'", "\\'")}'")))],
+                datasets: [{
+                    label: 'Cantidad vendida',
+                    data: [@string.Join(",", Model.TopProductos.Select(p => p.CantidadVendida))],
+                    backgroundColor: '#764ba2'
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+            </text>
+        }
+    </script>
+}

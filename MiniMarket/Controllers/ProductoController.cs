@@ -97,6 +97,18 @@ namespace MiniMarket.Controllers
                     Stock = stock
                 };
                 _context.Inventarios.Add(inventario);
+
+                if (stock > 0)
+                {
+                    _context.Movimientos.Add(new Movimiento
+                    {
+                        ProductoId = producto.Id,
+                        Tipo = "entrada",
+                        Cantidad = stock,
+                        Fecha = DateTime.Now
+                    });
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -147,8 +159,22 @@ namespace MiniMarket.Controllers
 
                     if (inventario != null)
                     {
+                        var stockAnterior = inventario.Stock ?? 0;
+                        var diferencia = stock - stockAnterior;
+
                         inventario.Stock = stock;
                         _context.Update(inventario);
+
+                        if (diferencia != 0)
+                        {
+                            _context.Movimientos.Add(new Movimiento
+                            {
+                                ProductoId = producto.Id,
+                                Tipo = diferencia > 0 ? "entrada" : "salida",
+                                Cantidad = Math.Abs(diferencia),
+                                Fecha = DateTime.Now
+                            });
+                        }
                     }
 
                     await _context.SaveChangesAsync();
