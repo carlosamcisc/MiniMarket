@@ -13,6 +13,10 @@ public partial class Venta
 
     public decimal? Total { get; set; }
 
+    public decimal? Efectivo { get; set; }
+
+    public decimal? Cambio { get; set; }
+
     public virtual ICollection<DetalleVentum> DetalleVenta { get; set; } = new List<DetalleVentum>();
 
     public virtual Usuario? Usuario { get; set; }

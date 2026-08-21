@@ -64,7 +64,7 @@ namespace MiniMarket.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> create(string detalleJson)
+        public async Task<IActionResult> create(string detalleJson, decimal efectivo)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
 
@@ -77,10 +77,19 @@ namespace MiniMarket.Controllers
                     return BadRequest("no hay productos en la venta");
                 }
 
+                var total = detalles.Sum(d => d.Precio * d.Cantidad) ?? 0;
+
+                if (efectivo < total)
+                {
+                    return BadRequest("el efectivo recibido es menor al total de la venta");
+                }
+
                 var venta = new Venta
                 {
                     Fecha = DateTime.Now,
-                    Total = detalles.Sum(d => d.Precio * d.Cantidad),
+                    Total = total,
+                    Efectivo = efectivo,
+                    Cambio = efectivo - total,
                     UsuarioId = UsuarioActualId
                 };
 
@@ -230,6 +239,19 @@ namespace MiniMarket.Controllers
                     .SetFont(bold)
                     .SetFontSize(11)
                     .SetTextAlignment(TextAlignment.RIGHT));
+
+                if (venta.Efectivo.HasValue)
+                {
+                    document.Add(new Paragraph($"efectivo: ${venta.Efectivo:0.00}")
+                        .SetFont(normal)
+                        .SetFontSize(8)
+                        .SetTextAlignment(TextAlignment.RIGHT));
+
+                    document.Add(new Paragraph($"cambio: ${venta.Cambio:0.00}")
+                        .SetFont(bold)
+                        .SetFontSize(9)
+                        .SetTextAlignment(TextAlignment.RIGHT));
+                }
 
                 document.Add(new Paragraph("----------------------------")
                     .SetFontSize(8));

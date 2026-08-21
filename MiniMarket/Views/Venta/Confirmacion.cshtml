@@ -82,6 +82,17 @@
                                         <td colspan="3" class="text-end">Total:</td>
                                         <td class="text-end text-success fs-6">$@Model.Total?.ToString("N2")</td>
                                     </tr>
+                                    @if (Model.Efectivo.HasValue)
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-end">Efectivo recibido:</td>
+                                            <td class="text-end">$@Model.Efectivo?.ToString("N2")</td>
+                                        </tr>
+                                        <tr class="fw-bold">
+                                            <td colspan="3" class="text-end">Cambio:</td>
+                                            <td class="text-end text-success fs-6">$@Model.Cambio?.ToString("N2")</td>
+                                        </tr>
+                                    }
                                 </tfoot>
                             </table>
                         </div>
