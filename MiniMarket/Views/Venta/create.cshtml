@@ -192,19 +192,9 @@
                         <!-- Resumen de venta -->
                         <div class="card bg-gradient-light border-0 rounded-3 mb-4" style="background: linear-gradient(135deg, var(--brand-50) 0%, #e6e9fb 100%);">
                             <div class="card-body p-4">
-                                <div class="col-md-6 mt-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                       @*  <div class="rounded-circle bg-white p-3 shadow-sm">
-                                            <i class="bi bi-cash-coin fs-3 text-primary"></i>
-                                        </div>
-                                        <label for="efectivo">Efectivo</label>
-                                        <input type="number" id="efectivo" name="efectivo" class="form-control form-control-lg rounded-3" style="width:200px"> *@
-                                    </div>
-                                </div>
-                                <div class="row align-items-center">
-                                   
-                                   
-                                    <div class="col-md-6">
+                                <div class="row align-items-center g-3">
+
+                                    <div class="col-md-4">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="rounded-circle bg-white p-3 shadow-sm">
                                                 <i class="bi bi-calculator fs-3 text-primary"></i>
@@ -218,8 +208,27 @@
                                         </div>
                                     </div>
 
-                                   
-                                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                                    <div class="col-md-4">
+                                        <label for="efectivo" class="form-label fw-semibold">
+                                            <i class="bi bi-cash-coin"></i> Efectivo recibido
+                                        </label>
+                                        <input type="number" id="efectivo" name="efectivo" step="0.01" min="0"
+                                               class="form-control form-control-lg rounded-3" placeholder="0.00"
+                                               oninput="calcularCambio()" />
+                                        <div class="form-text" id="efectivoAyuda">
+                                            <i class="bi bi-info-circle"></i> Ingresa el dinero que entrega el cliente
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <small class="text-muted d-block">Cambio a entregar</small>
+                                        <h2 class="fw-bold mb-0" id="cambio">$0.00</h2>
+                                    </div>
+
+                                </div>
+
+                                <div class="row align-items-center mt-3">
+                                    <div class="col-12 text-md-end">
                                         <div class="d-flex gap-2 justify-content-md-end">
                                             <button type="button" onclick="limpiarTodo()" class="btn btn-outline-danger rounded-pill px-4">
                                                 <i class="bi bi-trash3"></i> Limpiar todo
@@ -540,6 +549,35 @@
         if (document.getElementById("totalCell")) {
             document.getElementById("totalCell").innerHTML = `$${total.toFixed(2)}`;
         }
+
+        calcularCambio();
+    }
+
+    // Calcular cambio a partir del efectivo recibido
+    function calcularCambio() {
+        let total = parseFloat(document.getElementById("total").innerText) || 0;
+        let efectivoInput = document.getElementById("efectivo");
+        let efectivo = parseFloat(efectivoInput.value);
+        let cambioEl = document.getElementById("cambio");
+
+        if (isNaN(efectivo)) {
+            cambioEl.innerText = "$0.00";
+            cambioEl.className = "fw-bold mb-0";
+            efectivoInput.classList.remove("is-invalid");
+            return;
+        }
+
+        let cambio = efectivo - total;
+
+        if (cambio < 0) {
+            cambioEl.innerText = `$${cambio.toFixed(2)}`;
+            cambioEl.className = "fw-bold mb-0 text-danger";
+            efectivoInput.classList.add("is-invalid");
+        } else {
+            cambioEl.innerText = `$${cambio.toFixed(2)}`;
+            cambioEl.className = "fw-bold mb-0 text-success";
+            efectivoInput.classList.remove("is-invalid");
+        }
     }
 
     // Actualizar contador de items
@@ -569,6 +607,19 @@
             return false;
         }
 
+        let total = parseFloat(document.getElementById("total").innerText) || 0;
+        let efectivo = parseFloat(document.getElementById("efectivo").value);
+
+        if (isNaN(efectivo)) {
+            mostrarAlerta('warning', 'Ingresa el efectivo recibido del cliente');
+            return false;
+        }
+
+        if (efectivo < total) {
+            mostrarAlerta('error', 'El efectivo recibido es menor al total de la venta');
+            return false;
+        }
+
         let detallesParaEnviar = detalles.map(d => ({
             productoId: d.productoId,
             cantidad: d.cantidad,
@@ -578,8 +629,8 @@
         document.getElementById("detalleJson").value = JSON.stringify(detallesParaEnviar);
 
         // Mostrar confirmación
-        let total = document.getElementById("total").innerText;
-        return confirm(`Total de la venta: $${total}\n\n¿Confirmas realizar esta venta?`);
+        let cambio = (efectivo - total).toFixed(2);
+        return confirm(`Total de la venta: $${total.toFixed(2)}\nEfectivo recibido: $${efectivo.toFixed(2)}\nCambio: $${cambio}\n\n¿Confirmas realizar esta venta?`);
     }
 
     // Mostrar alerta personalizada

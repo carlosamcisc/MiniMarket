@@ -168,6 +168,12 @@ public partial class MiniMarketContext : DbContext
             entity.Property(e => e.Total)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("total");
+            entity.Property(e => e.Efectivo)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("efectivo");
+            entity.Property(e => e.Cambio)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("cambio");
             entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Venta)
