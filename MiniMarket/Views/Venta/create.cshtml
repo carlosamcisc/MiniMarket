@@ -192,9 +192,8 @@
                         <!-- Resumen de venta -->
                         <div class="card bg-gradient-light border-0 rounded-3 mb-4" style="background: linear-gradient(135deg, var(--brand-50) 0%, #e6e9fb 100%);">
                             <div class="card-body p-4">
-                                <div class="row align-items-center g-3">
-
-                                    <div class="col-md-4">
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-12">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="rounded-circle bg-white p-3 shadow-sm">
                                                 <i class="bi bi-calculator fs-3 text-primary"></i>
@@ -207,8 +206,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-4">
+                                <div class="row g-3">
+
+                                    <div class="col-md-6 offset-md-6">
                                         <label for="efectivo" class="form-label fw-semibold">
                                             <i class="bi bi-cash-coin"></i> Efectivo recibido
                                         </label>
@@ -218,26 +220,21 @@
                                         <div class="form-text" id="efectivoAyuda">
                                             <i class="bi bi-info-circle"></i> Ingresa el dinero que entrega el cliente
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-4">
-                                        <small class="text-muted d-block">Cambio a entregar</small>
-                                        <h2 class="fw-bold mb-0" id="cambio">$0.00</h2>
-                                    </div>
-
-                                </div>
-
-                                <div class="row align-items-center mt-3">
-                                    <div class="col-12 text-md-end">
-                                        <div class="d-flex gap-2 justify-content-md-end">
-                                            <button type="button" onclick="limpiarTodo()" class="btn btn-outline-danger rounded-pill px-4">
-                                                <i class="bi bi-trash3"></i> Limpiar todo
-                                            </button>
-                                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
-                                                <i class="bi bi-cash-coin"></i> Finalizar venta
-                                            </button>
+                                        <div class="text-md-end mt-3">
+                                            <small class="text-muted d-block">Cambio a entregar</small>
+                                            <h2 class="fw-bold mb-2" id="cambio">$0.00</h2>
+                                            <div class="d-flex gap-2 justify-content-md-end">
+                                                <button type="button" onclick="limpiarTodo()" class="btn btn-outline-danger rounded-pill px-4">
+                                                    <i class="bi bi-trash3"></i> Limpiar todo
+                                                </button>
+                                                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
+                                                    <i class="bi bi-cash-coin"></i> Finalizar venta
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
