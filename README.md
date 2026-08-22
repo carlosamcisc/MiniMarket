@@ -150,5 +150,3 @@ El script `db_minimarket.sql` incluye usuarios semilla (contraseñas ya hasheada
 ## Roadmap / Pendientes
 
 - Registrar movimientos de inventario (`movimientos`) al vender o reabastecer.
-- Migraciones de EF Core automatizadas en lugar del script `.sql` manual.
-- Agregar protección CSRF (antiforgery token) al formulario de login y a las peticiones POST de `Venta` (`Producto` y `Usuario` ya lo tienen).
