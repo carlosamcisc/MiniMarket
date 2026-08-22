@@ -1,6 +1,78 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+@{
+    ViewData["Title"] = "Política de Privacidad";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container py-5" style="max-width: 860px;">
+    <div class="text-center mb-5">
+        <i class="bi bi-shield-lock fs-1" style="color: var(--brand-600);"></i>
+        <h1 class="fw-bold mt-2">@ViewData["Title"]</h1>
+        <p class="text-muted">Cómo MiniMarket trata la información de sus usuarios internos</p>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold"><i class="bi bi-info-circle me-2" style="color: var(--brand-600);"></i>Alcance</h5>
+            <p class="text-muted mb-0">
+                MiniMarket es un sistema interno de punto de venta (POS) de uso exclusivo del personal autorizado
+                (Administrador, Gerente y Vendedor). No está dirigido al público ni recopila datos de clientes finales;
+                esta política describe el tratamiento de los datos de las cuentas de usuario que operan el sistema.
+            </p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold"><i class="bi bi-person-lines-fill me-2" style="color: var(--brand-600);"></i>Datos que se almacenan</h5>
+            <ul class="text-muted mb-0">
+                <li>Nombre y correo electrónico registrados por el Administrador al crear la cuenta.</li>
+                <li>Contraseña, almacenada únicamente encriptadas, nunca en texto plano.</li>
+                <li>Rol asignado (Administrador, Gerente o Vendedor), que determina los módulos accesibles.</li>
+                <li>Registro de las ventas asociadas al usuario que las generó, con fines de control interno.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold"><i class="bi bi-clipboard-check me-2" style="color: var(--brand-600);"></i>Finalidad del tratamiento</h5>
+            <p class="text-muted mb-0">
+                Los datos se utilizan exclusivamente para autenticar el acceso, aplicar el control de acceso por rol
+                a cada módulo del sistema y mantener la trazabilidad de las operaciones (ventas, movimientos de
+                inventario) registradas por cada usuario. No se utilizan con fines comerciales ni se ceden a terceros.
+            </p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold"><i class="bi bi-cookie me-2" style="color: var(--brand-600);"></i>Sesión y cookies</h5>
+            <p class="text-muted mb-0">
+                Al iniciar sesión se emite una cookie de autenticación con una vigencia de 8 horas
+                (renovable mientras el usuario esté activo). Esta cookie solo identifica la sesión iniciada; no se
+                utilizan cookies de rastreo ni de terceros con fines publicitarios.
+            </p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold"><i class="bi bi-server me-2" style="color: var(--brand-600);"></i>Almacenamiento y seguridad</h5>
+            <p class="text-muted mb-0">
+                Toda la información se guarda en la base de datos de la instancia del negocio. El acceso
+                a los datos está restringido por rol y las contraseñas nunca se almacenan ni se muestran en texto
+                plano en ninguna pantalla del sistema.
+            </p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold"><i class="bi bi-person-gear me-2" style="color: var(--brand-600);"></i>Derechos del usuario</h5>
+            <p class="text-muted mb-0">
+                Cualquier usuario puede solicitar al Administrador la consulta, corrección o baja de su cuenta desde
+                el módulo <strong>Usuarios</strong>. El Administrador es el responsable de mantener actualizada y
+                proteger esta información dentro del sistema.
+            </p>
+        </div>
+    </div>
+</div>

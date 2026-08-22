@@ -31,6 +31,7 @@ namespace MiniMarket.Controllers
             return View(vm);
         }
 
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();
