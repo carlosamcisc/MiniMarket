@@ -57,7 +57,7 @@
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
                 <!-- Header con gradiente rojo (advertencia) -->
-                <div class="card-header py-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="card-header py-3" style="background: var(--danger-gradient);">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
                             <i class="bi bi-exclamation-triangle-fill text-white fs-2"></i>
@@ -234,14 +234,14 @@
 
     /* Botón eliminar */
     .btn-danger {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        background: var(--danger-gradient);
         border: none;
         transition: all 0.3s ease;
     }
 
         .btn-danger:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
         }
 
         .btn-danger:disabled {
@@ -256,8 +256,8 @@
 
     /* Checkbox personalizado */
     .form-check-input:checked {
-        background-color: #dc3545;
-        border-color: #dc3545;
+        background-color: var(--color-danger);
+        border-color: var(--color-danger);
     }
 
     .form-check-input:focus {
@@ -270,7 +270,7 @@
     }
 
         .bg-light:hover {
-            background-color: #e9ecef !important;
+            background-color: var(--border-subtle) !important;
         }
 
     /* Responsive */

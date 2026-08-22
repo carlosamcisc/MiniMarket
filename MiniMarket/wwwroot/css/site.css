@@ -1,3 +1,69 @@
+:root {
+  /* Color de marca del sistema (usado en navbar, login, home) */
+  --brand-600: #667eea;
+  --brand-700: #764ba2;
+  --brand-gradient: linear-gradient(135deg, var(--brand-600) 0%, var(--brand-700) 100%);
+  --brand-50: #f1f2fd;
+
+  /* Estados semánticos, en tonos discretos alineados a la marca */
+  --color-danger: #dc3545;
+  --color-danger-dark: #b02a37;
+  --danger-gradient: linear-gradient(135deg, var(--color-danger) 0%, var(--color-danger-dark) 100%);
+
+  --color-success: #2f9e44;
+  --color-success-dark: #22803a;
+  --success-gradient: linear-gradient(135deg, var(--color-success) 0%, var(--color-success-dark) 100%);
+
+  --color-warning: #d9a017;
+
+  /* Neutrales */
+  --bg-subtle: #f8f9fa;
+  --border-subtle: #e9ecef;
+  --text-dark: #212529;
+
+  /* Alinea el tema de Bootstrap (azul por defecto) con la marca */
+  --bs-primary: var(--brand-600);
+  --bs-primary-rgb: 102, 126, 234;
+  --bs-link-color: var(--brand-700);
+  --bs-link-color-rgb: 118, 75, 162;
+  --bs-link-hover-color: var(--brand-600);
+  --bs-link-hover-color-rgb: 102, 126, 234;
+}
+
+/* Botones y componentes con clase primary: usan el gradiente de marca en vez del azul de Bootstrap */
+.btn-primary {
+  --bs-btn-bg: var(--brand-600);
+  --bs-btn-border-color: var(--brand-600);
+  --bs-btn-hover-bg: var(--brand-700);
+  --bs-btn-hover-border-color: var(--brand-700);
+  --bs-btn-active-bg: var(--brand-700);
+  --bs-btn-active-border-color: var(--brand-700);
+  --bs-btn-disabled-bg: var(--brand-600);
+  --bs-btn-disabled-border-color: var(--brand-600);
+  --bs-btn-focus-shadow-rgb: 102, 126, 234;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--brand-600);
+  --bs-btn-border-color: var(--brand-600);
+  --bs-btn-hover-bg: var(--brand-600);
+  --bs-btn-hover-border-color: var(--brand-600);
+  --bs-btn-active-bg: var(--brand-600);
+  --bs-btn-active-border-color: var(--brand-600);
+  --bs-btn-disabled-color: var(--brand-600);
+  --bs-btn-disabled-border-color: var(--brand-600);
+  --bs-btn-focus-shadow-rgb: 102, 126, 234;
+}
+
+.form-check-input:checked {
+  background-color: var(--brand-600);
+  border-color: var(--brand-600);
+}
+
+.form-check-input:focus {
+  border-color: var(--brand-600);
+}
+
 html {
   font-size: 14px;
 }
@@ -9,7 +75,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--brand-600);
 }
 
 html {

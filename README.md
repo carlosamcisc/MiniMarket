@@ -20,7 +20,7 @@ Sistema de punto de venta (POS) para un minimarket, desarrollado con **ASP.NET C
 - **Panel principal**: al ingresar como Administrador, `Home/Index` muestra totales de productos, ventas e ingresos, además de los últimos productos cargados.
 - **Gestión de productos**: alta, edición, eliminación, detalle y búsqueda por nombre o código.
 - **Control de inventario**: cada producto lleva su stock asociado y se descuenta automáticamente al vender.
-- **Registro de ventas**: carrito de venta con validación de stock disponible y transacción atómica en base de datos.
+- **Registro de ventas**: carrito de venta con validación de stock disponible, registro del efectivo recibido con cálculo automático del cambio a entregar, y transacción atómica en base de datos.
 - **Resumen y ticket en PDF**: al confirmar una venta se muestra una pantalla de resumen (`Venta/Confirmacion`) con el detalle de la compra, desde la cual se descarga el comprobante imprimible (formato de recibo angosto) generado con [iText7](https://itextpdf.com/).
 - **Autenticación de usuarios**: login contra la tabla `usuarios` con contraseñas hasheadas (PBKDF2-HMACSHA256) y sesión por cookie de 8 horas (`SlidingExpiration`). Tras iniciar sesión, cada rol es redirigido a su pantalla principal (Vendedor → nueva venta, Gerente → catálogo de productos, Administrador → panel principal).
 - **Control de acceso por rol**: cada controlador exige un rol específico vía `[Authorize(Roles = ...)]`; si el usuario no tiene permiso se le redirige a una vista de acceso denegado. Ver [Roles y permisos](#roles-y-permisos).

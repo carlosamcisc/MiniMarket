@@ -61,8 +61,8 @@
             <!-- Tarjeta principal -->
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
-                <!-- Header con gradiente verde (éxito/creación) -->
-                <div class="card-header py-3" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                <!-- Header -->
+                <div class="card-header py-3" style="background: var(--brand-gradient);">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
                             <i class="bi bi-plus-circle-fill text-white fs-2"></i>
@@ -358,20 +358,20 @@
 
     /* Estilos de formulario */
     .form-control:focus, .form-select:focus {
-        border-color: #11998e;
-        box-shadow: 0 0 0 0.2rem rgba(17, 153, 142, 0.25);
+        border-color: var(--brand-600);
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
     }
 
     /* Botón crear */
     .btn-success {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        background: var(--success-gradient);
         border: none;
         transition: all 0.3s ease;
     }
 
         .btn-success:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+            box-shadow: 0 4px 15px rgba(47, 158, 68, 0.4);
         }
 
     /* Botón cancelar */
@@ -385,7 +385,7 @@
     }
 
         .input-group .btn:hover {
-            background-color: #e9ecef;
+            background-color: var(--border-subtle);
             transform: scale(1.05);
         }
 

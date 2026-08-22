@@ -43,7 +43,7 @@ app.MapControllerRoute(
     name: "default",
      //pattern: "{controller=Home}/{action=Index}/{id?}")
      pattern: "{controller=Autenticacion}/{action=Login}/{id?}");
-    //.WithStaticAssets();
+//.WithStaticAssets();
 
 //using (var scope = app.Services.CreateScope())
 //{

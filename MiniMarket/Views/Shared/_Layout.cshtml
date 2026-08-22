@@ -15,34 +15,10 @@
 </head>
 <body>
     <header>
-        @* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MiniMarket</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Producto" asp-action="Index">Productos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Venta" asp-action="create">Vender</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav> *@
+      
         @if (ViewData["HideNavbar"] == null)
         {
-            <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-lg" style="background: var(--brand-gradient);">
                 <div class="container">
                     <!-- Logo y marca -->
                     <a class="navbar-brand fw-bold fs-4" asp-area="" asp-controller="Home" asp-action="Index">
@@ -59,45 +35,46 @@
                     <!-- Menú principal -->
                     <div class="collapse navbar-collapse" id="navbarMain">
                         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                            <!-- Inicio -->
-                            <li class="nav-item">
-                                <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
-                                   asp-area="" asp-controller="Home" asp-action="Index">
-                                    <i class="bi bi-house-door me-1"></i> Inicio
-                                </a>
-                            </li>
+                      
 
-                            <!-- Productos -->
-                            <li class="nav-item">
-                                <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Producto" ? "active" : "")"
-                                   asp-area="" asp-controller="Producto" asp-action="Index">
-                                    <i class="bi bi-box-seam me-1"></i> Productos
-                                </a>
-                            </li>
-
-                            <!-- Vender -->
-                            <li class="nav-item">
-                                <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Venta" ? "active" : "")"
-                                   asp-area="" asp-controller="Venta" asp-action="create">
-                                    <i class="bi bi-cart-plus me-1"></i> Vender
-                                </a>
-                            </li>
-
-                            @*   <!-- Ventas (opcional - si tienes índice de ventas) -->
-                        <li class="nav-item">
-                            <a class="nav-link fw-semibold" asp-area="" asp-controller="Venta" asp-action="Index">
-                                <i class="bi bi-receipt me-1"></i> Ventas
-                            </a>
-                        </li> *@
+                            <!-- Control de secciones por rol -->
+                         
 
                             @if (User.IsInRole("Administrador"))
                             {
+                                <!-- Inicio -->
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                                       asp-area="" asp-controller="Home" asp-action="Index">
+                                        <i class="bi bi-house-door me-1"></i> Inicio
+                                    </a>
+                                </li>
+
+                                <!-- Productos -->
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Producto" ? "active" : "")"
+                                       asp-area="" asp-controller="Producto" asp-action="Index">
+                                        <i class="bi bi-box-seam me-1"></i> Productos
+                                    </a>
+                                </li>
+
+                                <!-- Vender -->
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Venta" ? "active" : "")"
+                                       asp-area="" asp-controller="Venta" asp-action="create">
+                                        <i class="bi bi-cart-plus me-1"></i> Vender
+                                    </a>
+                                </li>
+
+                                <!-- Usuarios -->
                                 <li class="nav-item">
                                     <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Usuario" ? "active" : "")"
                                        asp-area="" asp-controller="Usuario" asp-action="Index">
                                         <i class="bi bi-people me-1"></i> Usuarios
                                     </a>
                                 </li>
+
+                                <!-- Reportes -->
                                 <li class="nav-item">
                                     <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reporte" ? "active" : "")"
                                        asp-area="" asp-controller="Reporte" asp-action="Index">
@@ -105,6 +82,31 @@
                                     </a>
                                 </li>
                             }
+
+                            @if (User.IsInRole("Gerente"))
+                            {
+                                <!-- Productos -->
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Producto" ? "active" : "")"
+                                       asp-area="" asp-controller="Producto" asp-action="Index">
+                                        <i class="bi bi-box-seam me-1"></i> Productos Existentes
+                                    </a>
+                                </li>
+
+                            }
+
+                           @if (User.IsInRole("Vendedor"))
+                           {
+
+                                <!-- Vender -->
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold @(ViewContext.RouteData.Values["controller"]?.ToString() == "Venta" ? "active" : "")"
+                                       asp-area="" asp-controller="Venta" asp-action="create">
+                                        <i class="bi bi-cart-plus me-1"></i> Sistema de Ventas
+                                    </a>
+                                </li>
+                           }
+
                         </ul>
 
                         <!-- Sección derecha - Usuario/Configuración -->
@@ -131,7 +133,7 @@
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" asp-controller="Usuario" asp-action="Perfil">
                                             <i class="bi bi-person"></i> Mi perfil
                                         </a>
                                     </li>
@@ -231,7 +233,7 @@
             }
 
                 .dropdown-item:hover {
-                    background-color: #f8f9fa;
+                    background-color: var(--bg-subtle);
                     transform: translateX(5px);
                 }
 

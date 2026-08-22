@@ -61,7 +61,7 @@
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
                 <!-- Header con gradiente -->
-                <div class="card-header bg-gradient-primary text-white py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-header bg-gradient-primary text-white py-3" style="background: var(--brand-gradient);">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-pencil-square fs-2 me-2"></i>
                         <div>
@@ -195,12 +195,12 @@
 <style>
     /* Mejoras visuales */
     .form-control:focus {
-        border-color: #667eea;
+        border-color: var(--brand-600);
         box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--brand-gradient);
         border: none;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -235,7 +235,7 @@
     }
 
     .input-group .btn:hover {
-        background-color: #e9ecef;
+        background-color: var(--border-subtle);
     }
 
     /* Responsive */
