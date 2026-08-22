@@ -45,9 +45,30 @@
                     </dl>
 
                     <div class="d-flex mt-4 pt-2">
-                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-3 ms-auto">
-                            <i class="bi bi-arrow-left"></i> Volver
-                        </a>
+
+                        @switch (Model.Rol?.Nombre)
+                        {
+                            case "Vendedor":
+
+                                <a asp-controller="Venta" asp-action="create" class="btn btn-outline-secondary rounded-3 ms-auto">
+                                    <i class="bi bi-arrow-left"></i> Volver
+                                </a>
+                                break;
+
+                            case "Gerente":
+                                <a asp-controller="Producto" asp-action="Index" class="btn btn-outline-secondary rounded-3 ms-auto">
+                                    <i class="bi bi-arrow-left"></i> Volver
+                                </a>
+                                break;
+                            default:
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-3 ms-auto">
+                                    <i class="bi bi-arrow-left"></i> Volver
+                                </a>
+                                break;
+                        }
+
+                    
+                     
                     </div>
                 </div>
             </div>
