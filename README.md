@@ -13,7 +13,6 @@ Sistema de punto de venta (POS) para un minimarket, desarrollado con **ASP.NET C
 - [Ejecución con Docker](#ejecución-con-docker)
 - [Modelo de datos](#modelo-de-datos)
 - [Roles y permisos](#roles-y-permisos)
-- [Roadmap / Pendientes](#roadmap--pendientes)
 
 ## Características
 
@@ -146,7 +145,3 @@ El script `db_minimarket.sql` incluye usuarios semilla (contraseñas ya hasheada
 | gerente@minimarket.com      | gerente123   | Gerente         |
 
 > Cámbialas antes de usar el sistema en un entorno real.
-
-## Roadmap / Pendientes
-
-- Registrar movimientos de inventario (`movimientos`) al vender o reabastecer.
