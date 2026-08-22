@@ -67,7 +67,7 @@ db_minimarket.sql          # Script de creación de la base de datos
 
 2. **Crear la base de datos**
 
-   - Primero debes ejecutar este codigo en tu instancia de SQL Server: `CREATE DATABASE minimarket`
+   - Primero debes ejecutar este codigo en tu instancia de SQL Server: `CREATE DATABASE minimarket;`
 
    - Luego debes Ejecuta el script `db_minimarket.sql` en tu instancia de SQL Server (por ejemplo desde SQL Server Management Studio o `sqlcmd`). El script crea la base `minimarket` con las tablas `productos`, `inventario`, `ventas`, `detalle_venta`, `movimientos`, `roles` y `usuarios`.
 
