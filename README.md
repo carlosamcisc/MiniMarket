@@ -67,9 +67,11 @@ db_minimarket.sql          # Script de creación de la base de datos
 
 2. **Crear la base de datos**
 
-   Ejecuta el script `db_minimarket.sql` en tu instancia de SQL Server (por ejemplo desde SQL Server Management Studio o `sqlcmd`). El script crea la base `minimarket` con las tablas `productos`, `inventario`, `ventas`, `detalle_venta`, `movimientos`, `roles` y `usuarios`.
+   - Primero debebes ejecutar este codigo en tu instancia de SQL Server: 'CREATE DATABASE minimarket'
 
-3. **Configurar la cadena de conexión**
+   - Luego debes Ejecuta el script `db_minimarket.sql` en tu instancia de SQL Server (por ejemplo desde SQL Server Management Studio o `sqlcmd`). El script crea la base `minimarket` con las tablas `productos`, `inventario`, `ventas`, `detalle_venta`, `movimientos`, `roles` y `usuarios`.
+
+4. **Configurar la cadena de conexión**
 
    Edita `MiniMarket/appsettings.json` (o `appsettings.Development.json`, o usa [User Secrets](https://learn.microsoft.com/aspnet/core/security/app-secrets)) con los datos de tu servidor:
 
@@ -79,7 +81,7 @@ db_minimarket.sql          # Script de creación de la base de datos
    }
    ```
 
-4. **Restaurar dependencias**
+5. **Restaurar dependencias**
 
    ```bash
    dotnet restore
